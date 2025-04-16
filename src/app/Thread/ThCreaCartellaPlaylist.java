@@ -9,7 +9,7 @@ public class ThCreaCartellaPlaylist extends Thread {
 	}
 	
 	public void run() {
-		File cartella = new File(nomecartella);
+		File cartella = new File("CartelleFileMp3/"+nomecartella);
 
         if (!cartella.exists()) 
             cartella.mkdir();

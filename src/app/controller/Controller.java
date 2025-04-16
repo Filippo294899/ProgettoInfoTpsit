@@ -2,6 +2,7 @@ package app.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
@@ -89,10 +90,21 @@ public class Controller {
 	    ThLogout logout=new ThLogout();
 	    logout.start();
 	}
-
+	
+	public void setPlaylistRiprodotta(String nomeplaylistRiprodotta) {
+		model.setNomeCartellaRiprodotta(nomeplaylistRiprodotta);
+	}
+	
 	public void setCartellaPrincipale(String nomeCartella) {
 		model.setNomeCartellaPrincipale(nomeCartella);
 		new ThCreaCartellaPlaylist(nomeCartella).start();
 	}
 	
+	public ArrayList<String> getElencoCartelleUtente(){
+		return model.getElencoCartelleUtente();
+	}
+	public ArrayList<String> getElencoCanzoniCartellaRiprodotta(){
+		return model.getElencoCanzoniCartellaRiprodotta();
+	}
+
 }
