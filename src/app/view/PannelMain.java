@@ -100,12 +100,22 @@ public class PannelMain extends JPanel {
 	}
 	public void addCanzoniPanelCanzoni() {	//da finire
 		for(String s: controller.getElencoCanzoniCartellaRiprodotta()) {
+			s=togliTXTtoCanzone(s);
 			JButton btnNewButton = new JButton(s);
 			panelCanzoni.add(btnNewButton);
 			btnNewButton.addActionListener(e -> System.out.println("mona"));	// fa partire il thread per l'usica audio - da finire
 		}
 	}
-	
+	private String togliTXTtoCanzone(String s) {
+		String finalString="";
+		for(int i=0;i<s.length();i++)
+			if(s.charAt(i)!='.')
+				finalString+=s.charAt(i);
+			else
+				break;
+		
+		return finalString;
+	}
 	
 	//bottoni:
 	private void onBtnLogout() {
