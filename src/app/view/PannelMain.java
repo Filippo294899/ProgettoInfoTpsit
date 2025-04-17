@@ -113,7 +113,7 @@ public class PannelMain extends JPanel {
 		frame.dispose();
 	}
 	private void onBtnCaricaMp3() {
-		// qua dentro devi fare in modo che richieda all'utente più file chje poi verrano salvati nelle cartelle
+		// qua dentro devi fare in modo che richieda all'utente più file chje poi verrano salvati nelle cartelle tramite model
 	}
 	
 	
