@@ -33,7 +33,7 @@ public class PannelMain extends JPanel {
 		controller=c;
 		this.frame=frame;
 		
-		frame.setBounds(0, 0, 700, 600);
+		frame.setBounds(0, 0, 720, 580);
 		setBounds(0, 0, 700, 600);
 		setLayout(null);
 		
@@ -56,6 +56,15 @@ public class PannelMain extends JPanel {
 		panelCartelleCanzoni.setLayout((LayoutManager) new BoxLayout(panelCartelleCanzoni, BoxLayout.Y_AXIS));
 		scrollPaneCartelleUtente.setViewportView(panelCartelleCanzoni);
 		
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnLogout.setBounds(593, 11, 97, 31);
+		btnLogout.addActionListener(e -> {
+			controller.logout();
+			frame.dispose();
+		});
+		add(btnLogout);
 		
 		new ThUpdate(this).start();//deve restare in fondo
 	}
