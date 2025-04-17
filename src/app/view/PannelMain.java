@@ -60,11 +60,13 @@ public class PannelMain extends JPanel {
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnLogout.setBounds(593, 11, 97, 31);
-		btnLogout.addActionListener(e -> {
-			controller.logout();
-			frame.dispose();
-		});
+		btnLogout.addActionListener(e -> onBtnLogout());
 		add(btnLogout);
+		
+		JButton btnCaricaMp3 = new JButton("Carica Mp3");
+		btnCaricaMp3.setBounds(10, 476, 133, 31);
+		btnCaricaMp3.addActionListener(e -> onBtnCaricaMp3());
+		add(btnCaricaMp3);
 		
 		new ThUpdate(this).start();//deve restare in fondo
 	}
@@ -105,8 +107,17 @@ public class PannelMain extends JPanel {
 	}
 	
 	
+	//bottoni:
+	private void onBtnLogout() {
+		controller.logout();
+		frame.dispose();
+	}
+	private void onBtnCaricaMp3() {
+		// qua dentro devi fare in modo che richieda all'utente più file chje poi verrano salvati nelle cartelle
+	}
+	
+	
 	public void update() {	//eseguita ogni secondo fino alla chiusura
 		addCartelleUtenteButton();
-		
 	}
 }

@@ -112,7 +112,6 @@ public class FrameLogin extends JFrame {
 			AllertErroreCredenziali();
 		else 
 			changeInPanelloMain();
-		
 	}
 
 	private void AllertErroreCredenziali() {
