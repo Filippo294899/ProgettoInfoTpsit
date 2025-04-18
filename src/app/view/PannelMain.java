@@ -64,6 +64,7 @@ public class PannelMain extends JPanel {
 	}
 	
 	public void addCartelleUtenteButton() {			//genera i bottoni delle cartelle e delle canzoni
+		panelCartelleCanzoni.removeAll();
 		for(String s:controller.getElencoCartelleUtente()) {
 			JButton btnNewButton = new JButton(s);
 			panelCartelleCanzoni.add(btnNewButton);
@@ -89,15 +90,22 @@ public class PannelMain extends JPanel {
 				addCanzoniPanelCanzoni();
 			});
 		}
+		panelCartelleCanzoni.revalidate();
+		panelCartelleCanzoni.repaint();
 	}
 	
-	public void addCanzoniPanelCanzoni() {	//da finire
+	public void addCanzoniPanelCanzoni() {	//da finire, non si aggiornano le canzoni in tempo reale
+		panelCanzoni.removeAll();
+		
 		for(String s: controller.getElencoCanzoniCartellaRiprodotta()) {
 			s=controller.togliTXTtoCanzone(s);
 			JButton btnNewButton = new JButton(s);
 			panelCanzoni.add(btnNewButton);
 			btnNewButton.addActionListener(e -> System.out.println("mona"));	// fa partire il thread per l'usica audio - da finire
 		}
+		
+		panelCanzoni.revalidate();
+		panelCanzoni.repaint();
 	}
 	
 	//bottoni:
