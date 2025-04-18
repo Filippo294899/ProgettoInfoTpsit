@@ -26,7 +26,15 @@ public class Model {
 			s.add(tit);
 		return s;
 	}
-	
+	public String togliTXTtoCanzone(String s) {
+		String finalString="";
+		for(int i=0;i<s.length();i++)
+			if(s.charAt(i)!='.')
+				finalString+=s.charAt(i);
+			else
+				break;
+		return finalString;
+	}
 	
 	
 	

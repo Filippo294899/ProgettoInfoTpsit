@@ -106,5 +106,7 @@ public class Controller {
 	public ArrayList<String> getElencoCanzoniCartellaRiprodotta(){
 		return model.getElencoCanzoniCartellaRiprodotta();
 	}
-
+	public String togliTXTtoCanzone(String s) {
+		return model.togliTXTtoCanzone(s);
+	}
 }
