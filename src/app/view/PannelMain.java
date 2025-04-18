@@ -23,12 +23,12 @@ public class PannelMain extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Controller controller;
-	private JFrame frame;
+	private FrameLogin frame;
 	private JPanel panelCartelleCanzoni;
 	private JPanel panelCanzoni;
 	private JScrollPane scrollPaneCanzoni;
 	
-	public PannelMain( Controller c , JFrame frame) {
+	public PannelMain( Controller c , FrameLogin frame) {
 		
 		controller=c;
 		this.frame=frame;

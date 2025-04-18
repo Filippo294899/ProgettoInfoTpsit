@@ -14,6 +14,7 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -31,6 +32,7 @@ public class FrameLogin extends JFrame {
 	private Boolean btnNascondiPasswordPremuto;
 	private JButton btnNascondiPassword;
 	private JTextField textNomeUtente;
+	private JLabel lbTitoloPaginaLogin;
 
 
 	public FrameLogin(Controller c) {
@@ -71,15 +73,15 @@ public class FrameLogin extends JFrame {
 		btnNascondiPassword.setBounds(335, 254, 21, 19);
 		contentPane.add(btnNascondiPassword);
 		
-		JLabel lbTitoloPaginaLogin = new JLabel("Login");
+		lbTitoloPaginaLogin = new JLabel("Login",SwingConstants.CENTER);
 		lbTitoloPaginaLogin.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lbTitoloPaginaLogin.setBounds(157, 44, 128, 54);
+		lbTitoloPaginaLogin.setBounds(10, 43, 346, 54);
 		contentPane.add(lbTitoloPaginaLogin);
 		
 		btLoginInviaDati = new JButton("Accedi");
 		btLoginInviaDati.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btLoginInviaDati.addActionListener((ActionEvent e)-> onBtLoginInviaDati(e));
-		btLoginInviaDati.setBounds(158, 323, 85, 21);
+		btLoginInviaDati.setBounds(145, 323, 109, 21);
 		contentPane.add(btLoginInviaDati);
 		
 		JLabel lblNomeUtente = new JLabel("Nome Utente");
@@ -91,6 +93,17 @@ public class FrameLogin extends JFrame {
 		textNomeUtente.setColumns(10);
 		textNomeUtente.setBounds(157, 202, 162, 19);
 		contentPane.add(textNomeUtente);
+		
+		JButton btnRegistrati = new JButton("Registrati");
+		btnRegistrati.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnRegistrati.setBounds(145, 412, 109, 23);
+		btnRegistrati.addActionListener(e -> onBtnRegistrati(e) );
+		contentPane.add(btnRegistrati);
+		
+		JLabel lblRegistrazione = new JLabel("Non hai un profilo ?");
+		lblRegistrazione.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblRegistrazione.setBounds(138, 387, 134, 14);
+		contentPane.add(lblRegistrazione);
 		
 		
 		if(controller.coockieLogin())
@@ -113,7 +126,13 @@ public class FrameLogin extends JFrame {
 		else 
 			changeInPanelloMain();
 	}
+	private void onBtnRegistrati(ActionEvent e){
+		lbTitoloPaginaLogin.setText("Registrazione");
+		controller.RegistrazioneUtente(textNomeUtente.getText(),textEmail.getText(),passwordMainPassword.getText());
+		
+	}
 
+	
 	private void AllertErroreCredenziali() {
 	    JOptionPane.showOptionDialog(
 	            contentPane, 

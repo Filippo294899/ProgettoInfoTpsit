@@ -27,7 +27,9 @@ public class Controller {
 	public boolean login(String nome, String email, String psw) {
 		return UtenteEsiste(nome, email, psw);
 	}	
-	
+	public void RegistrazioneUtente(String nome, String email, String psw) {
+		new ThRegistraUtente(nome,email,psw).start();
+	}	
 	@SuppressWarnings("resource")
 	private boolean UtenteEsiste(String nome, String email, String psw) {
 		File cartella=new File("UtentiRegistrati/");
@@ -55,8 +57,7 @@ public class Controller {
 	
 	//gestione file
 	private void SaveProfile(String nome, String email, String psw) {
-		ThSaveProfile SaveProfile=new ThSaveProfile(nome, email, psw);
-		SaveProfile.start();
+		new ThSaveProfile(nome, email, psw).start();;
 	}
 	
 	public Boolean coockieLogin() {
