@@ -11,7 +11,7 @@ public class ThRegistraUtente extends Thread{
 	private String path;
 	
 	public ThRegistraUtente(String nome, String email, String psw) {
-		path="UtentiRegistrati/Utente";
+		path="UtentiRegistrati/Utente-";
 		this.nome=nome;
 		this.email=email;
 		this.psw=psw;

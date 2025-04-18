@@ -28,15 +28,18 @@ public class FrameLogin extends JFrame {
 	private JPanel contentPane;
 	private JPasswordField passwordMainPassword;
 	private JTextField textEmail;
-	private JButton btLoginInviaDati;
+	private JButton btnInviaDati;
 	private Boolean btnNascondiPasswordPremuto;
 	private JButton btnNascondiPassword;
 	private JTextField textNomeUtente;
 	private JLabel lbTitoloPaginaLogin;
-
+	private JButton btnRegistrati;
+	private JLabel lblRegistrazione;
+	private boolean registrazione;
 
 	public FrameLogin(Controller c) {
 		controller=c;
+		registrazione=false;
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,11 +81,11 @@ public class FrameLogin extends JFrame {
 		lbTitoloPaginaLogin.setBounds(10, 43, 346, 54);
 		contentPane.add(lbTitoloPaginaLogin);
 		
-		btLoginInviaDati = new JButton("Accedi");
-		btLoginInviaDati.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btLoginInviaDati.addActionListener((ActionEvent e)-> onBtLoginInviaDati(e));
-		btLoginInviaDati.setBounds(145, 323, 109, 21);
-		contentPane.add(btLoginInviaDati);
+		btnInviaDati = new JButton("Accedi");
+		btnInviaDati.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnInviaDati.addActionListener((ActionEvent e)-> onBtnInviaDati(e));
+		btnInviaDati.setBounds(145, 323, 109, 21);
+		contentPane.add(btnInviaDati);
 		
 		JLabel lblNomeUtente = new JLabel("Nome Utente");
 		lblNomeUtente.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -94,13 +97,13 @@ public class FrameLogin extends JFrame {
 		textNomeUtente.setBounds(157, 202, 162, 19);
 		contentPane.add(textNomeUtente);
 		
-		JButton btnRegistrati = new JButton("Registrati");
+		btnRegistrati = new JButton("Registrati");
 		btnRegistrati.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnRegistrati.setBounds(145, 412, 109, 23);
 		btnRegistrati.addActionListener(e -> onBtnRegistrati(e) );
 		contentPane.add(btnRegistrati);
 		
-		JLabel lblRegistrazione = new JLabel("Non hai un profilo ?");
+		lblRegistrazione = new JLabel("Non hai un profilo ?");
 		lblRegistrazione.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblRegistrazione.setBounds(138, 387, 134, 14);
 		contentPane.add(lblRegistrazione);
@@ -120,16 +123,33 @@ public class FrameLogin extends JFrame {
 		}
 		btnNascondiPasswordPremuto=!btnNascondiPasswordPremuto;
 	}
-	private void onBtLoginInviaDati(ActionEvent e){
-		if(!controller.login(textNomeUtente.getText(),textEmail.getText(),passwordMainPassword.getText()))
-			AllertErroreCredenziali();
-		else 
-			changeInPanelloMain();
+	private void onBtnInviaDati(ActionEvent e){
+		if(!registrazione) {
+			if(!controller.login(textNomeUtente.getText(),textEmail.getText(),passwordMainPassword.getText()))
+				AllertErroreCredenziali();
+			else 
+				changeInPanelloMain();
+		}else {
+			controller.RegistrazioneUtente(textNomeUtente.getText(),textEmail.getText(),passwordMainPassword.getText());
+			registrazione=false;
+			lbTitoloPaginaLogin.setText("Login");
+			btnInviaDati.setText("Login");
+			textEmail.setText("");
+			textNomeUtente.setText("");
+			passwordMainPassword.setText("");
+			lblRegistrazione.setText("Registrati");
+			btnRegistrati.setVisible(true);
+		}
 	}
 	private void onBtnRegistrati(ActionEvent e){
 		lbTitoloPaginaLogin.setText("Registrazione");
-		controller.RegistrazioneUtente(textNomeUtente.getText(),textEmail.getText(),passwordMainPassword.getText());
-		
+		btnInviaDati.setText("Registrati");
+		textEmail.setText("");
+		textNomeUtente.setText("");
+		passwordMainPassword.setText("");
+		lblRegistrazione.setText("");
+		btnRegistrati.setVisible(false);
+		registrazione=true;		
 	}
 
 	
