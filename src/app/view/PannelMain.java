@@ -106,7 +106,6 @@ public class PannelMain extends JPanel {
 			btnNewButton.addActionListener(e -> System.out.println("mona"));	// fa partire il thread per l'usica audio - da finire
 		}
 	}
-
 	
 	//bottoni:
 	private void onBtnLogout() {
