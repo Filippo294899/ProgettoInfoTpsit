@@ -125,6 +125,6 @@ public class Controller {
 		return model.getElencoCanzoniCartellaRiprodotta();
 	}
 	public String togliTXTtoCanzone(String s) {
-		return model.togliTXTtoCanzone(s);
+		return model.togliEstensione(s,c-> c!='.');
 	}
 }

@@ -1,23 +1,15 @@
 package app.view;
 
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-
-import java.awt.BorderLayout;
-
 import app.Thread.ThUpdate;
 import app.controller.Controller;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.LayoutManager;
-
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import java.awt.Container;
-
 
 public class PannelMain extends JPanel {
 
@@ -98,6 +90,7 @@ public class PannelMain extends JPanel {
 			});
 		}
 	}
+	
 	public void addCanzoniPanelCanzoni() {	//da finire
 		for(String s: controller.getElencoCanzoniCartellaRiprodotta()) {
 			s=controller.togliTXTtoCanzone(s);
@@ -112,12 +105,13 @@ public class PannelMain extends JPanel {
 		controller.logout();
 		frame.dispose();
 	}
+	
 	private void onBtnCaricaMp3() {
 		// qua dentro devi fare in modo che richieda all'utente più file chje poi verrano salvati nelle cartelle tramite model
 	}
 	
-	
 	public void update() {	//eseguita ogni secondo fino alla chiusura
-		addCartelleUtenteButton();
+		addCartelleUtenteButton(); 
 	}
+	
 }

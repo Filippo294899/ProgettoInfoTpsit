@@ -13,9 +13,9 @@ public class ThUpdate extends Thread{
 	
 	public void run() {
 		try {
-			while(true) {
+			while(x.isVisible()) {
 				x.update();
-				sleep(800);
+				sleep(1000);
 			}
 		}catch (Exception e) {
 			// TODO: handle exception

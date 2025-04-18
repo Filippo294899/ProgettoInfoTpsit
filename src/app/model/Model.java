@@ -2,11 +2,12 @@ package app.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class Model {
 	private String nomeCartellaPrincipale;
 	private String nomeCartellaRiprodotta;
-
+	
 	public Model() {
 		nomeCartellaPrincipale="";
 		nomeCartellaRiprodotta="";
@@ -26,10 +27,10 @@ public class Model {
 			s.add(tit);
 		return s;
 	}
-	public String togliTXTtoCanzone(String s) {
+	public String togliEstensione(String s,Predicate<Character> p) {
 		String finalString="";
 		for(int i=0;i<s.length();i++)
-			if(s.charAt(i)!='.')
+			if(/*s.charAt(i)!='.'*/p.test(s.charAt(i)))
 				finalString+=s.charAt(i);
 			else
 				break;
