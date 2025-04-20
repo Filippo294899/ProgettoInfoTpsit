@@ -7,9 +7,12 @@ import app.controller.Controller;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.LayoutManager;
+import java.io.File;
+
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 public class PannelMain extends JPanel {
 
@@ -101,7 +104,7 @@ public class PannelMain extends JPanel {
 			s=controller.togliTXTtoCanzone(s);
 			JButton btnNewButton = new JButton(s);
 			panelCanzoni.add(btnNewButton);
-			btnNewButton.addActionListener(e -> System.out.println("mona"));	// fa partire il thread per l'usica audio - da finire
+			btnNewButton.addActionListener(e -> System.out.println("ti auguro la diarrea fulminante"));	// fa partire il thread per l'usica audio - da finire
 		}
 		
 		panelCanzoni.revalidate();
@@ -115,7 +118,7 @@ public class PannelMain extends JPanel {
 	}
 	
 	private void onBtnCaricaMp3() {
-		// qua dentro devi fare in modo che richieda all'utente più file chje poi verrano salvati nelle cartelle tramite model
+		controller.AddFileMp3();
 	}
 	
 	public void update() {	//eseguita ogni secondo fino alla chiusura

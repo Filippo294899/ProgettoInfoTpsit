@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import app.Thread.*;
 import app.model.Model;
 import app.view.*;
@@ -67,5 +70,21 @@ public class Controller {
 	}
 	public String togliTXTtoCanzone(String s) {
 		return model.togliEstensione(s,c-> c!='.');
+	}
+	public void AddFileMp3() {
+        // Crea il selettore di file
+        JFileChooser selettore = new JFileChooser();
+        selettore.setMultiSelectionEnabled(true);
+        selettore.setFileFilter(new FileNameExtensionFilter("File di testo (.txt)", "txt"));	//da cambiare ad mp3 senno non va
+
+        // Mostra la finestra di selezione
+        int risultato = selettore.showOpenDialog(frame);
+        
+        if (risultato == JFileChooser.APPROVE_OPTION) 
+        	model.SaveFile(selettore.getSelectedFiles());	//ritorna array file
+        else 
+            System.out.println("Selezione file annullata.");
+            
+    
 	}
 }

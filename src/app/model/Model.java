@@ -106,9 +106,10 @@ public class Model {
 	}
 	
 	
-	
-	
-	
+	public void SaveFile(File[] files) {
+		// da implementare 
+	}
+		
 	
 	
 	
