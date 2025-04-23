@@ -1,18 +1,14 @@
 package app.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.function.Predicate;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import app.Thread.*;
 import app.model.Model;
 import app.riproduzionemp3.RiproduzioneMp3;
 import app.view.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.function.Predicate;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Controller {
 	private Model model;

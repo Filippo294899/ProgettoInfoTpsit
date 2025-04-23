@@ -50,7 +50,7 @@ Creare un lettore MP3 in Java con funzionalità avanzate:
 |------|-------------------|
 | @franz | Gestione del **Model**, salvataggio file MP3 e organizzazione in cartelle per **genere**. Le canzoni con più generi saranno duplicate in più cartelle. |
 | @filippo | Creazione dello **schema grafico** dell’app: layout, design preliminare, flusso. (NO implementazione diretta all’inizio). |
-| @òmoro | Implementazione della **grafica** e gestione della **Controller logic**. |
+| @moro | Implementazione della **grafica** e gestione della **Controller logic**. |
 | @ivagnez | Affiancamento nella gestione della **grafica** e logica **Controller**. |
 
 ---
