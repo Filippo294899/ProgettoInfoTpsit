@@ -16,117 +16,133 @@ import javax.swing.JFileChooser;
 
 public class PannelMain extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    private Controller controller;
-    private FrameLogin frame;
-    private JPanel panelCartelleCanzoni;
-    private JPanel panelCanzoni;
-    private JScrollPane scrollPaneCanzoni;
-    private PanelPlayer panelPlayer;
-    
-    public PannelMain(Controller c, FrameLogin frame) {
+	private static final long serialVersionUID = 1L;
+	private Controller controller;
+	private FrameLogin frame;
+	private JPanel panelCartelleCanzoni;
+	private JPanel panelCanzoni;
+	private JScrollPane scrollPaneCanzoni;
+	
+	public PannelMain( Controller c , FrameLogin frame) {
+		
+		controller=c;
+		this.frame=frame;
+		
+		frame.setBounds(0, 0, 720, 580);
+		setBounds(0, 0, 700, 600);
+		setLayout(null);
+		
+		controller.setCartellaPrincipale(controller.getElementoFileLogin(t-> t.equals("nome")));
+		
+		JLabel lblTitolo = new JLabel("Bentornato "+controller.getElementoFileLogin(t->t.equals("nome")),SwingConstants.CENTER);
+		lblTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitolo.setBounds(10, 11, 680, 31);
+		add(lblTitolo);
+		
+		JScrollPane scrollPaneCartelleUtente = new JScrollPane();
+		scrollPaneCartelleUtente.setBounds(10, 40, 133, 425);
+		add(scrollPaneCartelleUtente);
+		
+		JLabel lblCartelle = new JLabel("Cartelle Utente",SwingConstants.CENTER);
+		lblCartelle.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		scrollPaneCartelleUtente.setColumnHeaderView(lblCartelle);
+		
+		panelCartelleCanzoni = new JPanel();
+		panelCartelleCanzoni.setLayout((LayoutManager) new BoxLayout(panelCartelleCanzoni, BoxLayout.Y_AXIS));
+		scrollPaneCartelleUtente.setViewportView(panelCartelleCanzoni);
+		
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnLogout.setBounds(593, 11, 97, 31);
+		btnLogout.addActionListener(e -> onBtnLogout());
+		add(btnLogout);
+		
+		JButton btnCaricaMp3 = new JButton("Carica Mp3");
+		btnCaricaMp3.setBounds(10, 476, 133, 31);
+		btnCaricaMp3.addActionListener(e -> onBtnCaricaMp3());
+		add(btnCaricaMp3);
+		
+		 JButton btnPlay = new JButton("Play");
+        btnPlay.setBounds(440, 478, 71, 27);
+        add(btnPlay);
         
-        controller = c;
-        this.frame = frame;
+        JButton btnPausa = new JButton("Pausa");
+        btnPausa.setBounds(523, 478, 71, 27);
+        add(btnPausa);
         
-        frame.setBounds(0, 0, 720, 580);
-        setBounds(0, 0, 700, 600);
-        setLayout(null);
+        JButton btnAvanti = new JButton(">>");
+        btnAvanti.setBounds(606, 478, 71, 27);
+        add(btnAvanti);
         
-        controller.setCartellaPrincipale(controller.getElementoFileLogin(t-> t.equals("nome")));
+        JButton btnIndietro = new JButton("<<");
+        btnIndietro.setBounds(357, 478, 71, 27);
+        add(btnIndietro);
         
-        JLabel lblTitolo = new JLabel("Bentornato " + controller.getElementoFileLogin(t->t.equals("nome")), SwingConstants.CENTER);
-        lblTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        lblTitolo.setBounds(10, 11, 680, 31);
-        add(lblTitolo);
-        
-        JScrollPane scrollPaneCartelleUtente = new JScrollPane();
-        scrollPaneCartelleUtente.setBounds(10, 40, 133, 425);
-        add(scrollPaneCartelleUtente);
-        
-        JLabel lblCartelle = new JLabel("Cartelle Utente", SwingConstants.CENTER);
-        lblCartelle.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        scrollPaneCartelleUtente.setColumnHeaderView(lblCartelle);
-        
-        panelCartelleCanzoni = new JPanel();
-        panelCartelleCanzoni.setLayout((LayoutManager) new BoxLayout(panelCartelleCanzoni, BoxLayout.Y_AXIS));
-        scrollPaneCartelleUtente.setViewportView(panelCartelleCanzoni);
-        
-        JButton btnLogout = new JButton("Logout");
-        btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        btnLogout.setBounds(593, 11, 97, 31);
-        btnLogout.addActionListener(e -> onBtnLogout());
-        add(btnLogout);
-        
-        JButton btnCaricaMp3 = new JButton("Carica Mp3");
-        btnCaricaMp3.setBounds(10, 476, 133, 31);
-        btnCaricaMp3.addActionListener(e -> onBtnCaricaMp3());
-        add(btnCaricaMp3);
-        
-        // Aggiungi il pannello player
-        panelPlayer = new PanelPlayer(controller);
-        panelPlayer.setBounds(280, 476, 400, 80);
-        add(panelPlayer);
-        
-        // Registra il pannello player nel controller
-        controller.setPanelPlayer(panelPlayer);
-        
-        new ThUpdate(this).start(); // deve restare in fondo
-    }
-    
-    public void addCartelleUtenteButton() {
-        panelCartelleCanzoni.removeAll();
-        for(String s : controller.getElencoCartelleUtente()) {
-            JButton btnNewButton = new JButton(s);
-            panelCartelleCanzoni.add(btnNewButton);
-            
-            btnNewButton.addActionListener(e -> {                
-                controller.setPlaylistRiprodotta(s);
-                
-                if (scrollPaneCanzoni != null)
-                    remove(scrollPaneCanzoni);
+        JLabel lbltit = new JLabel("scrive lo sytato");
+        lbltit.setBounds(359, 448, 318, 17);
+        add(lbltit);
+		
+		new ThUpdate(this).start();//deve restare in fondo
+	}
+	
+	public void addCartelleUtenteButton() {			//genera i bottoni delle cartelle e delle canzoni
+		panelCartelleCanzoni.removeAll();
+		for(String s:controller.getElencoCartelleUtente()) {
+			JButton btnNewButton = new JButton(s);
+			panelCartelleCanzoni.add(btnNewButton);
+			
+			btnNewButton.addActionListener(e -> {				
+				controller.setPlaylistRiprodotta(s);
+				
+				if (scrollPaneCanzoni != null)
+					remove(scrollPaneCanzoni);
 
-                scrollPaneCanzoni = new JScrollPane();
-                scrollPaneCanzoni.setBounds(141, 40, 133, 425);
-                add(scrollPaneCanzoni);
+				scrollPaneCanzoni = new JScrollPane();
+				scrollPaneCanzoni.setBounds(141, 40, 133, 425);
+				add(scrollPaneCanzoni);
 
-                JLabel lblCanzoni = new JLabel("Canzoni - " + s, SwingConstants.CENTER);
-                lblCanzoni.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                scrollPaneCanzoni.setColumnHeaderView(lblCanzoni);
-                
-                // Aggiungi pannello per le canzoni
-                panelCanzoni = new JPanel();
-                panelCanzoni.setLayout((LayoutManager) new BoxLayout(panelCanzoni, BoxLayout.Y_AXIS));
-                scrollPaneCanzoni.setViewportView(panelCanzoni);
-                
-                // Aggiungi bottoni per ciascuna canzone
-                for(String canzone : controller.getElencoCanzoniCartellaRiprodotta()) {
-                    JButton btnCanzone = new JButton(controller.togliTXTtoCanzone(canzone));
-                    panelCanzoni.add(btnCanzone);
-                    
-                    btnCanzone.addActionListener(songEvent -> {
-                        // Quando si clicca su una canzone, la riproduci
-                        controller.playSongByName(canzone);
-                    });
-                }
-                
-                repaint();
-                revalidate();
-            });
-        }
-    }
-    
-    public void onBtnLogout() {
-        controller.logout();
-        frame.dispose();
-        System.exit(0);
-    }
-    
-    public void onBtnCaricaMp3() {
-        controller.AddFileMp3();
-    }
-    
-    public void update() {
-        addCartelleUtenteButton();
-    }
+				JLabel lblCanzoni = new JLabel("Canzoni - " + s, SwingConstants.CENTER);
+				lblCanzoni.setFont(new Font("Tahoma", Font.PLAIN, 15));
+				scrollPaneCanzoni.setColumnHeaderView(lblCanzoni);
+
+				panelCanzoni = new JPanel();
+				panelCanzoni.setLayout(new BoxLayout(panelCanzoni, BoxLayout.Y_AXIS));
+				scrollPaneCanzoni.setViewportView(panelCanzoni);
+				
+				addCanzoniPanelCanzoni();
+			});
+		}
+		panelCartelleCanzoni.revalidate();
+		panelCartelleCanzoni.repaint();
+	}
+	
+	public void addCanzoniPanelCanzoni() {	//da finire, non si aggiornano le canzoni in tempo reale
+		panelCanzoni.removeAll();
+		
+		for(String s: controller.getElencoCanzoniCartellaRiprodotta()) {
+			s=controller.togliTXTtoCanzone(s);
+			JButton btnNewButton = new JButton(s);
+			panelCanzoni.add(btnNewButton);
+			btnNewButton.addActionListener(e -> System.out.println("ti auguro la diarrea fulminante"));	// fa partire il thread per l'usica audio - da finire
+		}
+		
+		panelCanzoni.revalidate();
+		panelCanzoni.repaint();
+	}
+	
+	//bottoni:
+	private void onBtnLogout() {
+		controller.logout();
+		frame.dispose();
+	}
+	
+	private void onBtnCaricaMp3() {
+		controller.AddFileMp3();
+	}
+	
+	public void update() {	//eseguita ogni secondo fino alla chiusura
+		addCartelleUtenteButton(); 
+	}
+	
 }

@@ -67,7 +67,7 @@ public class Mp3Player {
         } else if (currentSongPath != null && audioClip == null) {
             // Se il clip non è stato caricato ma abbiamo un percorso, carica e riproduci
             loadSong(currentSongPath);
-            play();
+            // play();
         }
     }
 

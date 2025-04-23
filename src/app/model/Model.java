@@ -2,6 +2,7 @@ package app.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Predicate;
@@ -11,165 +12,131 @@ import app.Thread.ThSaveProfile;
 public class Model {
 	private String nomeCartellaPrincipale;
 	private String nomeCartellaRiprodotta;
-	
+
 	public Model() {
-		nomeCartellaPrincipale="";
-		nomeCartellaRiprodotta="";
+		nomeCartellaPrincipale = "";
+		nomeCartellaRiprodotta = "";
 	}
-	
-	public ArrayList<String> getElencoCartelleUtente(){
-		ArrayList<String> s=new ArrayList<String>();
-		File cartella = new File("CartelleFileMp3/"+nomeCartellaPrincipale+"/");
-		for(String nomeFile : cartella.list())
+
+	public ArrayList<String> getElencoCartelleUtente() {
+		ArrayList<String> s = new ArrayList<String>();
+		File cartella = new File("CartelleFileMp3/" + nomeCartellaPrincipale + "/");
+		for (String nomeFile : cartella.list())
 			s.add(nomeFile);
 		return s;
 	}
-	public ArrayList<String> getElencoCanzoniCartellaRiprodotta(){
-		ArrayList<String> s=new ArrayList<String>();
-		File canzoni=new File("CartelleFileMp3/"+nomeCartellaPrincipale+"/"+nomeCartellaRiprodotta+"/");
-		for(String tit:canzoni.list())
+
+	public ArrayList<String> getElencoCanzoniCartellaRiprodotta() {
+		ArrayList<String> s = new ArrayList<String>();
+		File canzoni = new File("CartelleFileMp3/" + nomeCartellaPrincipale + "/" + nomeCartellaRiprodotta + "/");
+		for (String tit : canzoni.list())
 			s.add(tit);
 		return s;
 	}
-	public String togliEstensione(String s,Predicate<Character> p) {
-		String finalString="";
-		for(int i=0;i<s.length();i++)
-			if(/*s.charAt(i)!='.'*/p.test(s.charAt(i)))
-				finalString+=s.charAt(i);
+
+	public String togliEstensione(String s, Predicate<Character> p) {
+		String finalString = "";
+		for (int i = 0; i < s.length(); i++)
+			if (/* s.charAt(i)!='.' */p.test(s.charAt(i)))
+				finalString += s.charAt(i);
 			else
 				break;
 		return finalString;
 	}
+
 	@SuppressWarnings("resource")
 	public boolean IsUtenteEsistente(String nome, String email, String psw) {
-		File cartella=new File("UtentiRegistrati/");
-		for(String s: cartella.list()) {
-	        try {
-	            Scanner scanner = new Scanner(new File("UtentiRegistrati/"+s));
-	            
-	            boolean Briga1,Briga2,Briga3;
-	            
-	            String riga1 = scanner.nextLine();
-	            if(riga1.equals(nome))
-	            	Briga1=true;
-	            else
-	            	Briga1=false;
-	            
-	            String riga2 = scanner.nextLine();	
-	            if(riga2.equals(email))
-	            	Briga2=true;
-		        else
-		            Briga2=false;
-		            
-	            
-	            String riga3 = scanner.nextLine();	
-	            if(riga2.equals(psw))
-	            	Briga3=true;
-		        else
-		            Briga3=false;
-		            
-	            if(Briga1&&Briga2&&Briga3) {
-	            	SaveProfile(nome, email, psw);
-	            	return true;
-	            }
+		File cartella = new File("UtentiRegistrati/");
+		for (String s : cartella.list()) {
+			try {
+				Scanner scanner = new Scanner(new File("UtentiRegistrati/" + s));
 
-	            scanner.close();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+				boolean Briga1, Briga2, Briga3;
+
+				String riga1 = scanner.nextLine();
+				if (riga1.equals(nome))
+					Briga1 = true;
+				else
+					Briga1 = false;
+
+				String riga2 = scanner.nextLine();
+				if (riga2.equals(email))
+					Briga2 = true;
+				else
+					Briga2 = false;
+
+				String riga3 = scanner.nextLine();
+				if (riga2.equals(psw))
+					Briga3 = true;
+				else
+					Briga3 = false;
+
+				if (Briga1 && Briga2 && Briga3) {
+					SaveProfile(nome, email, psw);
+					return true;
+				}
+
+				scanner.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		return false;
 	}
+
 	private void SaveProfile(String nome, String email, String psw) {
-		new ThSaveProfile(nome, email, psw).start();;
+		new ThSaveProfile(nome, email, psw).start();
+		;
 	}
-	
+
 	public String getElementoFileLogin(Predicate<String> p) {
-        String stringa = "";
-        try {
-            Scanner s = new Scanner(new File("Credenziali/cookieCredenziali.txt"));
-            
-            if (s.hasNextLine()) {
-                String riga1 = s.nextLine();
-                if (!p.test("email")) 
-                    stringa = riga1;
-                else 
-                    if (s.hasNextLine()) 
-                        stringa = s.nextLine();
-                    
-                }
-            s.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return stringa; 
+		String stringa = "";
+		try {
+			Scanner s = new Scanner(new File("Credenziali/cookieCredenziali.txt"));
+
+			if (s.hasNextLine()) {
+				String riga1 = s.nextLine();
+				if (!p.test("email"))
+					stringa = riga1;
+				else if (s.hasNextLine())
+					stringa = s.nextLine();
+
+			}
+			s.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return stringa;
 	}
-	
-	
+
 	public void SaveFile(File[] files) {
-	    if (files == null || files.length == 0) {
-	        return;
-	    }
+		File cartella = new File("CartelleFileMp3/" + nomeCartellaPrincipale);
 
-	    File cartellaUtente = new File("CartelleFileMp3/" + nomeCartellaPrincipale);
-	    if (!cartellaUtente.exists()) {
-	        boolean success = cartellaUtente.mkdirs();
-	        if (!success) {
-	            System.out.println("Errore nella creazione della cartella utente: " + cartellaUtente.getPath());
-	            return;
-	        }
-	        System.out.println("Creata cartella utente: " + cartellaUtente.getPath());
-	    }
+		// general la caryella Libreria per ogni utente in cui ci sarà tutta la libreria
+		// musicale
 
-	    // Se nessuna cartella di playlist è stata selezionata, crea o usa "Default"
-	    if (nomeCartellaRiprodotta == null || nomeCartellaRiprodotta.isEmpty()) {
-	        nomeCartellaRiprodotta = "Default";
-	    }
+		String path = cartella.getPath() + "/Libreria";
 
-	    // Crea la cartella di playlist se non esiste
-	    File cartellaPlaylist = new File(cartellaUtente, nomeCartellaRiprodotta);
-	    if (!cartellaPlaylist.exists()) {
-	        boolean success = cartellaPlaylist.mkdir();
-	        if (!success) {
-	            System.out.println("Errore nella creazione della cartella playlist: " + cartellaPlaylist.getPath());
-	            return;
-	        }
-	        System.out.println("Creata cartella playlist: " + cartellaPlaylist.getPath());
-	    }
+		if (cartella.list().length == 0) {
+			System.out.println("cartella vuota");
+			File cartellaUtente = new File(path);
+			cartellaUtente.mkdir();
+		}
 
-	    // Copia ciascun file selezionato nella cartella di destinazione
-	    for (File sourceFile : files) {
-	        // Verifica che il file sia un MP3
-	        if (!sourceFile.getName().toLowerCase().endsWith(".mp3")) {
-	            System.out.println("Il file " + sourceFile.getName() + " non è un file MP3. Sarà ignorato.");
-	            continue;
-	        }
+		for (File f : files)
+			if (f.exists() && f.isFile()) { // Controlla che il file esista ed è un file
+				File destinazione = new File(path + "/" + f.getName());
+				try {
+					// Copia il file nella cartella principale
+					Files.copy(f.toPath(), destinazione.toPath());
+				} catch (IOException e) {
+					System.err.println("Errore durante il salvataggio del file " + f.getName() + ": " + e.getMessage());
+				}
+			}
 
-	        try {
-	            // Crea il file di destinazione
-	            File destFile = new File(cartellaPlaylist, sourceFile.getName());
-	            
-	            // Copia il file
-	            java.nio.file.Files.copy(
-	                sourceFile.toPath(),
-	                destFile.toPath(),
-	                java.nio.file.StandardCopyOption.REPLACE_EXISTING
-	            );
-	            
-	            System.out.println("File " + sourceFile.getName() + " copiato con successo in " + destFile.getPath());
-	        } catch (IOException e) {
-	            System.out.println("Errore durante la copia del file " + sourceFile.getName() + ": " + e.getMessage());
-	            e.printStackTrace();
-	        }
-	    }
 	}
-		
-	
-	
-	
-	
-	
+
 	public String getNomeCartellaRiprodotta() {
 		return nomeCartellaRiprodotta;
 	}
@@ -177,6 +144,7 @@ public class Model {
 	public void setNomeCartellaRiprodotta(String nomeCartellaRiprodotta) {
 		this.nomeCartellaRiprodotta = nomeCartellaRiprodotta;
 	}
+
 	public String getNomeCartellaPrincipale() {
 		return nomeCartellaPrincipale;
 	}
