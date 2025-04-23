@@ -22,6 +22,10 @@ public class PannelMain extends JPanel {
 	private JPanel panelCartelleCanzoni;
 	private JPanel panelCanzoni;
 	private JScrollPane scrollPaneCanzoni;
+	private JButton btnAvanti;
+	private  JButton btnIndietro;
+	private  JButton btnPlay;
+	private JButton btnPausa;
 	
 	public PannelMain( Controller c , FrameLogin frame) {
 		
@@ -63,20 +67,22 @@ public class PannelMain extends JPanel {
 		btnCaricaMp3.addActionListener(e -> onBtnCaricaMp3());
 		add(btnCaricaMp3);
 		
-		 JButton btnPlay = new JButton("Play");
+		btnPlay = new JButton("Play");
         btnPlay.setBounds(440, 478, 71, 27);
         add(btnPlay);
         
-        JButton btnPausa = new JButton("Pausa");
+        btnPausa = new JButton("Pausa");
         btnPausa.setBounds(523, 478, 71, 27);
         add(btnPausa);
         
-        JButton btnAvanti = new JButton(">>");
+        btnAvanti = new JButton(">>");
         btnAvanti.setBounds(606, 478, 71, 27);
+        btnAvanti.addActionListener(e -> onBtnAvanti() );
         add(btnAvanti);
         
-        JButton btnIndietro = new JButton("<<");
+        btnIndietro = new JButton("<<");
         btnIndietro.setBounds(357, 478, 71, 27);
+        btnIndietro.addActionListener(e -> onBtnIndietro() );
         add(btnIndietro);
         
         JLabel lbltit = new JLabel("scrive lo sytato");
@@ -121,10 +127,9 @@ public class PannelMain extends JPanel {
 		panelCanzoni.removeAll();
 		
 		for(String s: controller.getElencoCanzoniCartellaRiprodotta()) {
-			s=controller.togliTXTtoCanzone(s);
-			JButton btnNewButton = new JButton(s);
+			JButton btnNewButton = new JButton(controller.togliTXTtoCanzone(s));
 			panelCanzoni.add(btnNewButton);
-			btnNewButton.addActionListener(e -> System.out.println("ti auguro la diarrea fulminante"));	// fa partire il thread per l'usica audio - da finire
+			btnNewButton.addActionListener(e -> controller.AccodaCanzone(s));	// fa partire il thread per l'usica audio - da finire
 		}
 		
 		panelCanzoni.revalidate();
@@ -136,9 +141,21 @@ public class PannelMain extends JPanel {
 		controller.logout();
 		frame.dispose();
 	}
+	private void onBtnAvanti() {
+		controller.SkipCanzone();
+	}
 	
 	private void onBtnCaricaMp3() {
 		controller.AddFileMp3();
+	}
+	private void onBtnIndietro() {
+		controller.ScalaCanzone();
+	}
+	private void onBtnPlay() {
+		controller.playSong();
+	}
+	private void onBtnPausa() {
+		controller.stopSong();
 	}
 	
 	public void update() {	//eseguita ogni secondo fino alla chiusura
