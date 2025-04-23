@@ -11,8 +11,8 @@ import app.Thread.ThSaveProfile;
 import app.api.GenereApi;
 
 public class Model {
-	private String nomeCartellaPrincipale;
-	private String nomeCartellaRiprodotta;
+	private static String nomeCartellaPrincipale;
+	private static String nomeCartellaRiprodotta;
 
 	public Model() {
 		nomeCartellaPrincipale = "";
@@ -35,10 +35,10 @@ public class Model {
 		return s;
 	}
 
-	public String togliEstensione(String s, Predicate<Character> p) {
+	public static String togliEstensione(String s, Predicate<Character> p) {
 		String finalString = "";
 		for (int i = 0; i < s.length(); i++)
-			if (/* s.charAt(i)!='.' */p.test(s.charAt(i)))
+			if (p.test(s.charAt(i)))
 				finalString += s.charAt(i);
 			else
 				break;
@@ -158,7 +158,9 @@ public class Model {
 			}
 
 	}
-
+	public static String getActuallyDirectory() {
+		return "CartelleFileMp3/" + nomeCartellaPrincipale+"/"+nomeCartellaRiprodotta+"/";
+	}
 	public String testGenere(File file) {
 		return GenereApi.detectGenre(file);
 	}

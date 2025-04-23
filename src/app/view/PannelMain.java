@@ -23,6 +23,7 @@ public class PannelMain extends JPanel {
 	private  JButton btnIndietro;
 	private  JButton btnPlay;
 	private JButton btnPausa;
+	private JLabel lbltit;
 	
 	public PannelMain( Controller c , FrameLogin frame) {
 		
@@ -66,10 +67,12 @@ public class PannelMain extends JPanel {
 		
 		btnPlay = new JButton("Play");
         btnPlay.setBounds(440, 478, 71, 27);
+        btnPlay.addActionListener(e -> onBtnPlay() );
         add(btnPlay);
         
         btnPausa = new JButton("Pausa");
         btnPausa.setBounds(523, 478, 71, 27);
+        btnPausa.addActionListener(e -> onBtnPausa() );
         add(btnPausa);
         
         btnAvanti = new JButton(">>");
@@ -82,13 +85,13 @@ public class PannelMain extends JPanel {
         btnIndietro.addActionListener(e -> onBtnIndietro() );
         add(btnIndietro);
         
-        JLabel lbltit = new JLabel("scrive lo sytato");
+        lbltit = new JLabel("",SwingConstants.CENTER);
         lbltit.setBounds(359, 448, 318, 17);
         add(lbltit);
 		
 		new ThUpdate(this).start();//deve restare in fondo
 	}
-	
+	//update
 	public void addCartelleUtenteButton() {			//genera i bottoni delle cartelle e delle canzoni
 		panelCartelleCanzoni.removeAll();
 		for(String s:controller.getElencoCartelleUtente()) {
@@ -133,6 +136,10 @@ public class PannelMain extends JPanel {
 		panelCanzoni.repaint();
 	}
 	
+	private void setLblTit() {
+		lbltit.setText(controller.getStatoCanzone());
+	}
+	
 	//bottoni:
 	private void onBtnLogout() {
 		controller.logout();
@@ -155,8 +162,11 @@ public class PannelMain extends JPanel {
 		controller.stopSong();
 	}
 	
+	
+	
 	public void update() {	//eseguita ogni secondo fino alla chiusura
 		addCartelleUtenteButton(); 
+		setLblTit();
 	}
 	
 }

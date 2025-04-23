@@ -84,20 +84,24 @@ public class Controller {
     
 	}
 	
+	
 	public void AccodaCanzone(String canzone) {
 		RiproduzioneMp3.addSong(canzone);
 	}
 	public void SkipCanzone() {
-		RiproduzioneMp3.skip();
+		RiproduzioneMp3.coda(t -> t.equals(">>"));
 	}
 	public void ScalaCanzone() {
-		RiproduzioneMp3.tornaIndietro();
+		RiproduzioneMp3.coda(t -> t.equals("<<"));;
 	}
 	public void playSong() {
-		RiproduzioneMp3.play();
+		new ThPlaySong().start();
 	}
 	public void stopSong() {
-		RiproduzioneMp3.stop();
+		new ThStopSong().start();
+	}
+	public String getStatoCanzone() {
+		return RiproduzioneMp3.getStato();
 	}
 	
 	
