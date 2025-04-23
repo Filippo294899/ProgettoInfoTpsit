@@ -1,6 +1,7 @@
 package app.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Predicate;
@@ -107,7 +108,61 @@ public class Model {
 	
 	
 	public void SaveFile(File[] files) {
-		// da implementare 
+	    if (files == null || files.length == 0) {
+	        return;
+	    }
+
+	    File cartellaUtente = new File("CartelleFileMp3/" + nomeCartellaPrincipale);
+	    if (!cartellaUtente.exists()) {
+	        boolean success = cartellaUtente.mkdirs();
+	        if (!success) {
+	            System.out.println("Errore nella creazione della cartella utente: " + cartellaUtente.getPath());
+	            return;
+	        }
+	        System.out.println("Creata cartella utente: " + cartellaUtente.getPath());
+	    }
+
+	    // Se nessuna cartella di playlist è stata selezionata, crea o usa "Default"
+	    if (nomeCartellaRiprodotta == null || nomeCartellaRiprodotta.isEmpty()) {
+	        nomeCartellaRiprodotta = "Default";
+	    }
+
+	    // Crea la cartella di playlist se non esiste
+	    File cartellaPlaylist = new File(cartellaUtente, nomeCartellaRiprodotta);
+	    if (!cartellaPlaylist.exists()) {
+	        boolean success = cartellaPlaylist.mkdir();
+	        if (!success) {
+	            System.out.println("Errore nella creazione della cartella playlist: " + cartellaPlaylist.getPath());
+	            return;
+	        }
+	        System.out.println("Creata cartella playlist: " + cartellaPlaylist.getPath());
+	    }
+
+	    // Copia ciascun file selezionato nella cartella di destinazione
+	    for (File sourceFile : files) {
+	        // Verifica che il file sia un MP3
+	        if (!sourceFile.getName().toLowerCase().endsWith(".mp3")) {
+	            System.out.println("Il file " + sourceFile.getName() + " non è un file MP3. Sarà ignorato.");
+	            continue;
+	        }
+
+	        try {
+	            // Crea il file di destinazione
+	            File destFile = new File(cartellaPlaylist, sourceFile.getName());
+	            
+	            // Copia il file
+	            java.nio.file.Files.copy(
+	                sourceFile.toPath(),
+	                destFile.toPath(),
+	                java.nio.file.StandardCopyOption.REPLACE_EXISTING
+	            );
+	            
+	            System.out.println("File " + sourceFile.getName() + " copiato con successo in " + destFile.getPath());
+	        } catch (IOException e) {
+	            System.out.println("Errore durante la copia del file " + sourceFile.getName() + ": " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	    }
 	}
 		
 	
