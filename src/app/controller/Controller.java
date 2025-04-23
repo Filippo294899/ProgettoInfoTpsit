@@ -11,12 +11,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import app.Thread.*;
 import app.model.Model;
+import app.riproduzionemp3.RiproduzioneMp3;
 import app.view.*;
 
 public class Controller {
 	private Model model;
 	private FrameLogin frame;
-
 	
 	
 	public Controller(Model m) {
@@ -87,4 +87,24 @@ public class Controller {
             
     
 	}
+	
+	public void AccodaCanzone(String canzone) {
+		RiproduzioneMp3.AddSong(canzone);
+	}
+	public void SkipCanzone() {
+		RiproduzioneMp3.Skip();
+	}
+	public void ScalaCanzone() {
+		RiproduzioneMp3.TornaIndietro();
+	}
+	public void playSong() {
+		
+	}
+	public void stopSong() {
+		
+	}
+	
+	
+	
+	
 }
