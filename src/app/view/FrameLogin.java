@@ -109,7 +109,7 @@ public class FrameLogin extends JFrame {
 		contentPane.add(lblRegistrazione);
 		
 		
-		if(controller.coockieLogin())
+		if(controller.cookieLogin())
 			changeInPanelloMain();
 	}
 	

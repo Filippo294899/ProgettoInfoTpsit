@@ -45,7 +45,6 @@ public class Model {
 		return finalString;
 	}
 
-	@SuppressWarnings("resource")
 	public boolean IsUtenteEsistente(String nome, String email, String psw) {
 		File cartella = new File("UtentiRegistrati/");
 		for (String s : cartella.list()) {
@@ -111,11 +110,32 @@ public class Model {
 		return stringa;
 	}
 
-	public void SaveFile(File[] files) {
+	/*public void SaveFile(File[] files) {
 		File cartella = new File("CartelleFileMp3/" + nomeCartellaPrincipale);
 
-		// general la caryella Libreria per ogni utente in cui ci sarà tutta la libreria
-		// musicale
+		String path = cartella.getPath() + "/Libreria/";
+
+		if (cartella.list().length == 0) {
+			System.out.println("cartella vuota");
+			File cartellaUtente = new File(path);
+			cartellaUtente.mkdir();
+		}
+
+		for (File f : files)
+			if (f.exists() && f.isFile()) {
+				File destinazione = new File(path + "/" + f.getName());
+				try {
+					// Copia il file nella cartella principale
+					Files.copy(f.toPath(), destinazione.toPath());
+					System.out.println(testGenere(f));
+				} catch (IOException e) {
+					System.err.println("Errore durante il salvataggio del file " + f.getName() + ": " + e.getMessage());
+				}
+			}
+
+	}*/
+	public void SaveFile(File[] files) {
+		File cartella = new File("CartelleFileMp3/" + nomeCartellaPrincipale);
 
 		String path = cartella.getPath() + "/Libreria";
 
@@ -126,7 +146,7 @@ public class Model {
 		}
 
 		for (File f : files)
-			if (f.exists() && f.isFile()) {
+			if (f.exists() && f.isFile()) { // Controlla che il file esista ed è un file
 				File destinazione = new File(path + "/" + f.getName());
 				try {
 					// Copia il file nella cartella principale

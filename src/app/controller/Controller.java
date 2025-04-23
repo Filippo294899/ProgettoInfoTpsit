@@ -2,7 +2,7 @@ package app.controller;
 
 import app.Thread.*;
 import app.model.Model;
-import app.riproduzionemp3.RiproduzioneMp3;
+import app.riproduzioneMp3.RiproduzioneMp3;
 import app.view.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class Controller {
 		return model.IsUtenteEsistente(nome, email, psw);
 	}
 	
-	public Boolean coockieLogin() {
+	public Boolean cookieLogin() {
 		if(new File("Credenziali/").listFiles().length>0)
 			return true;
 		return false;
@@ -85,19 +85,19 @@ public class Controller {
 	}
 	
 	public void AccodaCanzone(String canzone) {
-		RiproduzioneMp3.AddSong(canzone);
+		RiproduzioneMp3.addSong(canzone);
 	}
 	public void SkipCanzone() {
-		RiproduzioneMp3.Skip();
+		RiproduzioneMp3.skip();
 	}
 	public void ScalaCanzone() {
-		RiproduzioneMp3.TornaIndietro();
+		RiproduzioneMp3.tornaIndietro();
 	}
 	public void playSong() {
-		
+		RiproduzioneMp3.play();
 	}
 	public void stopSong() {
-		
+		RiproduzioneMp3.stop();
 	}
 	
 	

@@ -1,18 +1,15 @@
 package app.view;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 import app.Thread.ThUpdate;
 import app.controller.Controller;
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.LayoutManager;
-import java.io.File;
-
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 
 public class PannelMain extends JPanel {
 

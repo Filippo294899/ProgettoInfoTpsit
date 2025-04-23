@@ -12,24 +12,45 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class GenereApi {
+
+	static {
+		// Silenzia i log di Jaudiotagger
+		Logger.getLogger("org.jaudiotagger").setLevel(Level.SEVERE);
+	}
+
+	private static final String[] ID3_GENRES = { "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge",
+			"Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno",
+			"Industrial", "Ballad"
+			// Aggiungi altri se necessario (fino a 147)
+	};
 
 	public static String detectGenre(File mp3File) {
 		try {
 			AudioFile audioFile = AudioFileIO.read(mp3File);
 			Tag tag = audioFile.getTag();
-			
+
 			if (tag != null) {
 				String genre = tag.getFirst(FieldKey.GENRE);
 				if (genre != null && !genre.isEmpty()) {
+					// Controlla se è nel formato "(numero)"
+					if (genre.matches("\\(\\d+\\)")) {
+						int index = Integer.parseInt(genre.replaceAll("[()]", ""));
+						if (index >= 0 && index < ID3_GENRES.length) {
+							return ID3_GENRES[index];
+						}
+					}
 					return genre;
 				}
 			}
-			
-			// Se non è stato trovato nessun genere o c'è stato un problema
+
 			return "Sconosciuto";
 
-		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
+		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException
+				| InvalidAudioFrameException e) {
 			System.err.println("Errore durante la lettura dei metadati: " + e.getMessage());
 			return "Sconosciuto";
 		}

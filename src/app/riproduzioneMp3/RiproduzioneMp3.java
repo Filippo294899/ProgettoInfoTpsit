@@ -16,19 +16,19 @@ public class RiproduzioneMp3 {
 	private static int currentSongIndex = -1;
 	private static Thread playerThread;
 	
-	public static void AddSong(String songPath) {
+	public static void addSong(String songPath) {
 		songQueue.add(songPath);
 		if (!isPlaying) {
 			playNextSong();
 		}
 	}
 	
-	public static void Skip() {
+	public static void skip() {
 		stopPlayer();
 		playNextSong();
 	}
 	
-	public static void TornaIndietro() {
+	public static void tornaIndietro() {
 		if (currentSongIndex > 0) {
 			stopPlayer();
 			currentSongIndex--;
@@ -37,7 +37,7 @@ public class RiproduzioneMp3 {
 		}
 	}
 	
-	public static void Play() {
+	public static void play() {
 		if (!isPlaying && currentSongIndex >= 0) {
 			String currentSong = playedSongs.get(currentSongIndex);
 			playSong(currentSong);
@@ -46,7 +46,7 @@ public class RiproduzioneMp3 {
 		}
 	}
 	
-	public static void Stop() {
+	public static void stop() {
 		stopPlayer();
 	}
 	
