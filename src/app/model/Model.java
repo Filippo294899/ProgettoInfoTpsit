@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 
 import app.Thread.ThSaveProfile;
+import app.api.GenereApi;
 
 public class Model {
 	private String nomeCartellaPrincipale;
@@ -125,11 +126,12 @@ public class Model {
 		}
 
 		for (File f : files)
-			if (f.exists() && f.isFile()) { // Controlla che il file esista ed è un file
+			if (f.exists() && f.isFile()) {
 				File destinazione = new File(path + "/" + f.getName());
 				try {
 					// Copia il file nella cartella principale
 					Files.copy(f.toPath(), destinazione.toPath());
+					System.out.println(testGenere(f));
 				} catch (IOException e) {
 					System.err.println("Errore durante il salvataggio del file " + f.getName() + ": " + e.getMessage());
 				}
@@ -137,6 +139,10 @@ public class Model {
 
 	}
 
+	public String testGenere(File file) {
+		return GenereApi.detectGenre(file);
+	}
+	
 	public String getNomeCartellaRiprodotta() {
 		return nomeCartellaRiprodotta;
 	}

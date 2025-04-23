@@ -1,32 +1,26 @@
+package app.api;
+
 import java.io.File;
 import java.io.IOException;
 
-import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 
 public class GenereApi {
 
-	public String detectGenre(File mp3File) {
+	public static String detectGenre(File mp3File) {
 		try {
-			Mp3File mp3 = new Mp3File(mp3File.getPath());
-			String genre = "Sconosciuto";
+			AudioFile audioFile = AudioFileIO.read(mp3File);
+			Tag tag = audioFile.getTag();
 			
-			// Prova a leggere il genere dai tag ID3v2 (più recenti)
-			if (mp3.hasId3v2Tag()) {
-				ID3v2 id3v2Tag = mp3.getId3v2Tag();
-				genre = id3v2Tag.getGenreDescription();
-				if (genre != null && !genre.isEmpty()) {
-					return genre;
-				}
-			}
-			
-			// Se non ha funzionato, prova con i tag ID3v1 (più vecchi)
-			if (mp3.hasId3v1Tag()) {
-				ID3v1 id3v1Tag = mp3.getId3v1Tag();
-				genre = id3v1Tag.getGenreDescription();
+			if (tag != null) {
+				String genre = tag.getFirst(FieldKey.GENRE);
 				if (genre != null && !genre.isEmpty()) {
 					return genre;
 				}
@@ -35,7 +29,7 @@ public class GenereApi {
 			// Se non è stato trovato nessun genere o c'è stato un problema
 			return "Sconosciuto";
 
-		} catch (UnsupportedTagException | InvalidDataException | IOException e) {
+		} catch (CannotReadException | IOException | TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
 			System.err.println("Errore durante la lettura dei metadati: " + e.getMessage());
 			return "Sconosciuto";
 		}
