@@ -8,6 +8,12 @@ Totale ore: 3
 
 Task: Aggiunto classe GenereApi.java che permette di estrarre dal file .mp3 il genere musicale usando una libreria esterna chiamata jaudiotagger.
 
+### 24-04-2025
+
+Totale ore: 1
+
+Task: Sistemato sintassi e aggiunto librerie
+
 ---
 
 ## **Ivagnes**

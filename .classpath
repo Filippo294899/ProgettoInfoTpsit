@@ -6,18 +6,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="libs/javafx.base.jar"/>
-	<classpathentry kind="lib" path="libs/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="libs/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="libs/javafx.graphics.jar"/>
-	<classpathentry kind="lib" path="libs/javafx.media.jar"/>
-	<classpathentry kind="lib" path="libs/javafx.swing.jar"/>
-	<classpathentry kind="lib" path="libs/javafx.web.jar"/>
-	<classpathentry kind="lib" path="libs/javafx-swt.jar"/>
 	<classpathentry kind="lib" path="libs/jdk.jsobject.jar"/>
-	<classpathentry kind="lib" path="libs/jfx.incubator.input.jar"/>
-	<classpathentry kind="lib" path="libs/jfx.incubator.richtext.jar"/>
-	<classpathentry kind="lib" path="libs/jlayer-1.0.1.jar"/>
 	<classpathentry kind="lib" path="libs/jaudiotagger-2.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/jlayer-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/franz/MEGA/school/triennio/4CII/tps/progettoFineAnnoTPS/ProgettoInfoTpsit/libs/basicplayer-3.0.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

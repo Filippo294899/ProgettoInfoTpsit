@@ -1,38 +1,23 @@
 package app.riproduzioneMp3;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 import java.util.function.Predicate;
 
 import app.Thread.ThPlaySong;
 import app.model.Model;
-import javafx.application.Platform;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javazoom.jl.player.Player;
 
-/*
- quando fai stop e rilasci il lock per start canzone, se ci sono de thread in coda parte lo stesso
- stop a volte non va
- da sistemare 
-  */
 public class RiproduzioneMp3 {
-	private static ArrayList<String> songs = new ArrayList<String>();
+
+	private static ArrayList<String> songs = new ArrayList<>();
 	private static Integer idxCurrentSong = null;
 	private static String currentSong = null;
-	private static MediaPlayer mediaPlayer = null;
-	private static boolean javafxInizializzato = false;
+	private static Player mediaPlayer = null;
 	private static boolean isMediaPLayerStopped = false;
 	private static Semaphore mutexPlay = new Semaphore(1);
-
-	private static void inizializzaToolkit() {
-		// applicazione swing non javafx
-		if (!javafxInizializzato) {
-			Platform.startup(() -> {
-			});
-			javafxInizializzato = true;
-		}
-	}
+	private static Thread playThread = null;
 
 	public static void addSong(String canzone) {
 		songs.add(canzone);
@@ -40,7 +25,6 @@ public class RiproduzioneMp3 {
 			idxCurrentSong = 0;
 			setCurrentSong();
 		}
-
 	}
 
 	public static void coda(Predicate<String> p) {
@@ -58,11 +42,8 @@ public class RiproduzioneMp3 {
 		setCurrentSong();
 
 		isMediaPLayerStopped = false;
-		if (isPlaying()) {
-			mediaPlayer.stop();
-			new ThPlaySong().start();
-			mutexPlay.release();
-		}
+		stop();
+		new ThPlaySong().start();  // ThPlaySong chiama play()
 	}
 
 	public static void play() {
@@ -70,42 +51,45 @@ public class RiproduzioneMp3 {
 			mutexPlay.acquire();
 
 			System.out.println("play...." + currentSong);
+			FileInputStream fis = new FileInputStream(Model.getActuallyDirectory() + currentSong);
 
-			inizializzaToolkit();
-			File fileAudio = new File(Model.getActuallyDirectory() + currentSong);
-			Media media = new Media(fileAudio.toURI().toString());
+			mediaPlayer = new Player(fis);
 
-			if (!isMediaPLayerStopped)
-				mediaPlayer = new MediaPlayer(media);
+			playThread = new Thread(() -> {
+				try {
+					mediaPlayer.play();  // bloccante
+					System.out.println("Canzone terminata.");
 
-			mediaPlayer.play();
-			isMediaPLayerStopped = false;
-
-			mediaPlayer.setOnEndOfMedia(() -> {
-				System.out.println("Canzone terminata.");
-				if (songs.size() > (idxCurrentSong + 2)) {
-					idxCurrentSong += 1;
-					setCurrentSong();
-				} else
-					mediaPlayer.dispose();
-				mutexPlay.release();
+					if (songs.size() > (idxCurrentSong + 1)) {
+						idxCurrentSong += 1;
+						setCurrentSong();
+						play(); // autoplay next
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					mutexPlay.release();
+				}
 			});
 
-		} catch (InterruptedException e) {
+			playThread.start();
+			isMediaPLayerStopped = false;
+
+		} catch (Exception e) {
 			e.printStackTrace();
+			mutexPlay.release();
 		}
 	}
 
 	public synchronized static void stop() {
-		inizializzaToolkit();
-
-		if (isPlaying()) {
+		if (playThread != null && playThread.isAlive()) {
 			System.out.println("stop....");
-			mediaPlayer.pause();
+			playThread.interrupt();
 			isMediaPLayerStopped = true;
 			mutexPlay.release();
-		} else
-			System.out.println("nn in riproduzione");
+		} else {
+			System.out.println("non in riproduzione");
+		}
 	}
 
 	private static void setCurrentSong() {
@@ -113,12 +97,12 @@ public class RiproduzioneMp3 {
 	}
 
 	private static boolean isPlaying() {
-		return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+		return playThread != null && playThread.isAlive();
 	}
 
 	public static String getStato() {
 		if (isPlaying())
-			return "In riproduzone " + Model.togliEstensione(currentSong, t -> t != '.') + "....";
+			return "In riproduzione " + Model.togliEstensione(currentSong, t -> t != '.') + "....";
 		return "Nessuna canzone in riproduzione";
 	}
 }
