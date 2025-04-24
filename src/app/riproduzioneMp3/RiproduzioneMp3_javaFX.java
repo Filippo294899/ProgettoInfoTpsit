@@ -16,7 +16,7 @@ import javafx.scene.media.MediaPlayer;
  stop a volte non va
  da sistemare 
   */
-public class RiproduzioneMp3_javaFX { // con javafx
+public class RiproduzioneMp3_javaFX{ // con javafx
 	private static ArrayList<String> songs = new ArrayList<String>();
 	private static Integer idxCurrentSong = null;
 	private static String currentSong = null;
@@ -26,14 +26,16 @@ public class RiproduzioneMp3_javaFX { // con javafx
 	private static Semaphore mutexPlay = new Semaphore(1);
 
 	private static void inizializzaToolkit() {
-		// applicazione swing non javafx
-		if (!javafxInizializzato) {
-			Platform.startup(() -> {
-			});
-			javafxInizializzato = true;
-		}
+	    if (!javafxInizializzato) {
+	        try {
+	            Platform.startup(() -> {});
+	            javafxInizializzato = true;
+	        } catch (Exception e) {
+	            System.err.println("Errore durante l'inizializzazione del toolkit JavaFX: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	    }
 	}
-
 	public static void addSong(String canzone) {
 		songs.add(canzone);
 		if (idxCurrentSong == null) {
@@ -44,6 +46,7 @@ public class RiproduzioneMp3_javaFX { // con javafx
 	}
 
 	public static void coda(Predicate<String> p) {
+		inizializzaToolkit();
 		if (p.test("<<")) {
 			System.out.println("indietro....");
 			if (songs.size() <= 1 || (idxCurrentSong - 1) < 0)
@@ -66,12 +69,12 @@ public class RiproduzioneMp3_javaFX { // con javafx
 	}
 
 	public static void play() {
+		inizializzaToolkit(); 
 		try {
 			mutexPlay.acquire();
 
 			System.out.println("play...." + currentSong);
 
-			inizializzaToolkit();
 			File fileAudio = new File(Model.getActuallyDirectory() + currentSong);
 			Media media = new Media(fileAudio.toURI().toString());
 
@@ -98,7 +101,6 @@ public class RiproduzioneMp3_javaFX { // con javafx
 
 	public synchronized static void stop() {
 		inizializzaToolkit();
-
 		if (isPlaying()) {
 			System.out.println("stop....");
 			mediaPlayer.pause();

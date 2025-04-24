@@ -2,6 +2,7 @@ package app.controller;
 
 import app.Thread.*;
 import app.model.Model;
+import app.riproduzioneMp3.RiproduzioneMp3_VLCJ;
 import app.riproduzioneMp3.RiproduzioneMp3_javaFX;
 import app.view.*;
 import java.io.File;
@@ -86,13 +87,13 @@ public class Controller {
 	
 	
 	public void AccodaCanzone(String canzone) {
-		RiproduzioneMp3_javaFX.addSong(canzone);
+		RiproduzioneMp3_VLCJ.addSong(canzone);
 	}
 	public void SkipCanzone() {
-		RiproduzioneMp3_javaFX.coda(t -> t.equals(">>"));
+		RiproduzioneMp3_VLCJ.coda(t -> t.equals(">>"));
 	}
 	public void ScalaCanzone() {
-		RiproduzioneMp3_javaFX.coda(t -> t.equals("<<"));;
+		RiproduzioneMp3_VLCJ.coda(t -> t.equals("<<"));;
 	}
 	public void playSong() {
 		new ThPlaySong().start();
@@ -101,7 +102,7 @@ public class Controller {
 		new ThStopSong().start();
 	}
 	public String getStatoCanzone() {
-		return RiproduzioneMp3_javaFX.getStato();
+		return RiproduzioneMp3_VLCJ.getStato();
 	}
 	
 	
