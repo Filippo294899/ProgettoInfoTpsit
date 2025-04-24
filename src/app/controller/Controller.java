@@ -2,7 +2,7 @@ package app.controller;
 
 import app.Thread.*;
 import app.model.Model;
-import app.riproduzioneMp3.RiproduzioneMp3;
+import app.riproduzioneMp3.RiproduzioneMp3_javaFX;
 import app.view.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -86,13 +86,13 @@ public class Controller {
 	
 	
 	public void AccodaCanzone(String canzone) {
-		RiproduzioneMp3.addSong(canzone);
+		RiproduzioneMp3_javaFX.addSong(canzone);
 	}
 	public void SkipCanzone() {
-		RiproduzioneMp3.coda(t -> t.equals(">>"));
+		RiproduzioneMp3_javaFX.coda(t -> t.equals(">>"));
 	}
 	public void ScalaCanzone() {
-		RiproduzioneMp3.coda(t -> t.equals("<<"));;
+		RiproduzioneMp3_javaFX.coda(t -> t.equals("<<"));;
 	}
 	public void playSong() {
 		new ThPlaySong().start();
@@ -101,7 +101,7 @@ public class Controller {
 		new ThStopSong().start();
 	}
 	public String getStatoCanzone() {
-		return RiproduzioneMp3.getStato();
+		return RiproduzioneMp3_javaFX.getStato();
 	}
 	
 	
