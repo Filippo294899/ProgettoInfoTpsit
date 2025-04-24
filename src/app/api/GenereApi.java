@@ -17,16 +17,13 @@ import java.util.logging.Logger;
 
 public class GenereApi {
 
-	static {
-		// Silenzia i log di Jaudiotagger
+	static { // silenzia i log
 		Logger.getLogger("org.jaudiotagger").setLevel(Level.SEVERE);
 	}
 
 	private static final String[] ID3_GENRES = { "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge",
 			"Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno",
-			"Industrial", "Ballad"
-			// Aggiungi altri se necessario (fino a 147)
-	};
+			"Industrial", "Ballad" };
 
 	public static String detectGenre(File mp3File) {
 		try {
@@ -36,7 +33,6 @@ public class GenereApi {
 			if (tag != null) {
 				String genre = tag.getFirst(FieldKey.GENRE);
 				if (genre != null && !genre.isEmpty()) {
-					// Controlla se è nel formato "(numero)"
 					if (genre.matches("\\(\\d+\\)")) {
 						int index = Integer.parseInt(genre.replaceAll("[()]", ""));
 						if (index >= 0 && index < ID3_GENRES.length) {
