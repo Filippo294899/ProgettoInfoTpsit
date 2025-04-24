@@ -11,6 +11,8 @@ import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+
+
 /*
  quando fai stop e rilasci il lock per start canzone, se ci sono de thread in coda parte lo stesso
  stop a volte non va

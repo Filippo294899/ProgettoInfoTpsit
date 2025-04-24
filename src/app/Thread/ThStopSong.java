@@ -7,6 +7,6 @@ public class ThStopSong extends Thread {
 
 	
 	public void run() {
-		RiproduzioneMp3_VLCJ.stop();
+		RiproduzioneMp3_javaFX.stop();
 	}
 }

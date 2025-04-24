@@ -8,6 +8,6 @@ public class ThPlaySong extends Thread {
 
 	
 	public void run() {
-		RiproduzioneMp3_VLCJ.play();
+		RiproduzioneMp3_javaFX.play();
 	}
 }
