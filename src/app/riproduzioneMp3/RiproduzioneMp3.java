@@ -10,6 +10,7 @@ import app.model.Model;
 import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 /*
  quando fai stop e rilasci il lock per start canzone, se ci sono de thread in coda parte lo stesso
  stop a volte non va
@@ -79,9 +80,16 @@ public class RiproduzioneMp3 {
             
             mediaPlayer.setOnEndOfMedia(() -> {	
                 System.out.println("Canzone terminata.");
-                if(songs.size()>(idxCurrentSong+2)) {
+                if(songs.size()>=(idxCurrentSong+2)) {
                 	idxCurrentSong+=1;
                     setCurrentSong();
+                    try {
+                    	
+						Thread.currentThread().sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+                    new ThPlaySong().start();
                 }else
                 	mediaPlayer.dispose();
                 mutexPlay.release();
@@ -114,5 +122,19 @@ public class RiproduzioneMp3 {
 		if(isPlaying())
 			return "In riproduzone "+Model.togliEstensione(currentSong,t -> t!='.') +"....";
 		return "Nessuna canzone in riproduzione";
+	}
+	public static String getTimeSong() {
+		if(isPlaying())
+			return String.format("%.2f", mediaPlayer.getCurrentTime().toMinutes());
+		return "0";
+	}
+	public static int getLenghtSong() {
+		if(isPlaying())
+			return (int)mediaPlayer.getTotalDuration().toSeconds();
+		return 1;
+	}
+	public static void setTimeSong(int time) {
+		if(isPlaying())
+			mediaPlayer.seek(Duration.seconds(time));
 	}
 }

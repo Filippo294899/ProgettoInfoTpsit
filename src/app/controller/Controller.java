@@ -103,6 +103,15 @@ public class Controller {
 	public String getStatoCanzone() {
 		return RiproduzioneMp3.getStato();
 	}
+	public String getTimeSong() {
+		return RiproduzioneMp3.getTimeSong();
+	}
+	public int getLenghtSong() {
+		return RiproduzioneMp3.getLenghtSong();
+	}
+	public void setTimeSong(int time) {
+		RiproduzioneMp3.setTimeSong(time);
+	}
 	
 	
 	

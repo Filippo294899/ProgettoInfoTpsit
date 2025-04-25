@@ -2,6 +2,8 @@ package app.view;
 
 import app.Thread.ThUpdate;
 import app.controller.Controller;
+
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.LayoutManager;
 import javax.swing.BoxLayout;
@@ -9,7 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+import java.awt.Panel;
 
 public class PannelMain extends JPanel {
 
@@ -24,7 +29,9 @@ public class PannelMain extends JPanel {
 	private  JButton btnPlay;
 	private JButton btnPausa;
 	private JLabel lbltit;
-	
+	private JSlider SliderTimeSong;
+    private JLabel lblTimeSong;
+    
 	public PannelMain( Controller c , FrameLogin frame) {
 		
 		controller=c;
@@ -66,30 +73,40 @@ public class PannelMain extends JPanel {
 		add(btnCaricaMp3);
 		
 		btnPlay = new JButton("Play");
-        btnPlay.setBounds(440, 478, 71, 27);
+        btnPlay.setBounds(438, 468, 71, 27);
         btnPlay.addActionListener(e -> onBtnPlay() );
         add(btnPlay);
         
         btnPausa = new JButton("Pausa");
-        btnPausa.setBounds(523, 478, 71, 27);
+        btnPausa.setBounds(519, 468, 71, 27);
         btnPausa.addActionListener(e -> onBtnPausa() );
         add(btnPausa);
         
         btnAvanti = new JButton(">>");
-        btnAvanti.setBounds(606, 478, 71, 27);
+        btnAvanti.setBounds(604, 468, 71, 27);
         btnAvanti.addActionListener(e -> onBtnAvanti() );
         add(btnAvanti);
         
         btnIndietro = new JButton("<<");
-        btnIndietro.setBounds(357, 478, 71, 27);
+        btnIndietro.setBounds(357, 468, 71, 27);
         btnIndietro.addActionListener(e -> onBtnIndietro() );
         add(btnIndietro);
         
         lbltit = new JLabel("",SwingConstants.CENTER);
-        lbltit.setBounds(359, 448, 318, 17);
+        lbltit.setBounds(357, 440, 318, 17);
         add(lbltit);
 		
-		new ThUpdate(this).start();//deve restare in fondo
+        SliderTimeSong = new JSlider();
+        SliderTimeSong.setBounds(357, 495, 318, 26);
+        SliderTimeSong.setMinimum(0);
+        SliderTimeSong.addChangeListener(e -> onSliderTimeSong());
+		add(SliderTimeSong);
+		
+		lblTimeSong = new JLabel("",SwingConstants.CENTER);
+		lblTimeSong.setBounds(357, 519, 308, 17);
+		add(lblTimeSong);
+		
+		new ThUpdate(this).start();
 	}
 	//update
 	public void addCartelleUtenteButton() {			//genera i bottoni delle cartelle e delle canzoni
@@ -139,6 +156,12 @@ public class PannelMain extends JPanel {
 	private void setLblTit() {
 		lbltit.setText(controller.getStatoCanzone());
 	}
+	private void setLblTimeSong() {
+		lblTimeSong.setText(controller.getTimeSong()+" secondi");
+	}
+	private void setSliderTimeSong() {
+		SliderTimeSong.setMaximum(controller.getLenghtSong());
+	}
 	
 	//bottoni:
 	private void onBtnLogout() {
@@ -162,11 +185,16 @@ public class PannelMain extends JPanel {
 		controller.stopSong();
 	}
 	
+	private void onSliderTimeSong() {
+		controller.setTimeSong(SliderTimeSong.getValue());
+	}
+	
 	
 	
 	public void update() {	//eseguita ogni secondo fino alla chiusura
 		addCartelleUtenteButton(); 
 		setLblTit();
+		setLblTimeSong();
+		setSliderTimeSong();
 	}
-	
 }
