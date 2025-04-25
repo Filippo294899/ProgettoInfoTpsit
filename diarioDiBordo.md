@@ -14,7 +14,7 @@ Task: Aggiunto classe GenereApi.java che permette di estrarre dal file .mp3 il g
 
 ### [Data]
 
-Totale ore: [numero]
+Totale ore: [+∞]
 
 Task: [Descrizione dettagliata delle attività svolte]
 
