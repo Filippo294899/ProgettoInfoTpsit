@@ -101,14 +101,14 @@ public class Controller {
 	public ArrayList<String> getCodaCanzoni(){
 		return RiproduzioneMp3.getCoda();
 	}
-	public String getCurrentSong(){
-		return RiproduzioneMp3.getCurrentSong();
+	public int getCurrentSong(){
+		return RiproduzioneMp3.getCurrentSongIdx();
 	}
 	public boolean IsCodaExist() {
 		return RiproduzioneMp3.IsCodaExist();
 	}
-	public void setCurrentSong(String song) {
-		RiproduzioneMp3.setCurrentSong(song);
+	public void setCurrentSong(int IDXsong) {
+		RiproduzioneMp3.setCurrentSong(IDXsong);
 	}
 	
 	

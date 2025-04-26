@@ -2,6 +2,7 @@ package app.view;
 
 import app.Thread.ThUpdate;
 import app.controller.Controller;
+import app.mycomponent.MyJButton;
 
 import java.awt.Font;
 import java.awt.LayoutManager;
@@ -18,6 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Container;
 
@@ -204,25 +206,28 @@ public class PannelMain extends JPanel {
 		panelCanzoni.revalidate();
 		panelCanzoni.repaint();
 	}
+	private int variabileDiCiclo;
 	public void addCodaCanzoni() {		
 		panelCodaCanzoni.removeAll();
-
-		for(String s:controller.getCodaCanzoni()) {
+		ArrayList<String> songs=controller.getCodaCanzoni();
+		
+		for(variabileDiCiclo=0;variabileDiCiclo<songs.size();variabileDiCiclo++) {
 			
-			JButton btnNewButton = new JButton(s);
-			if(s.equals(controller.getCurrentSong()))
+			MyJButton btnNewButton = new MyJButton(songs.get(variabileDiCiclo));
+			btnNewButton.setIdx(variabileDiCiclo);
+			if(variabileDiCiclo==controller.getCurrentSong())
 				btnNewButton.setBackground(Color.green);
-
 			
 			panelCodaCanzoni.add(btnNewButton);
 			
 			btnNewButton.addActionListener(e -> {				
-				controller.setCurrentSong(s);
+				controller.setCurrentSong(btnNewButton.getIdx());
 			});
 		}
 		panelCodaCanzoni.revalidate();
 		panelCodaCanzoni.repaint();
 	}
+	
 	public void setVisibileScrollCoda(boolean flag) {
 		scrollPaneCodaCanzoni.setVisible(flag);
 	}

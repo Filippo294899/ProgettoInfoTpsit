@@ -6,6 +6,7 @@ import java.util.concurrent.Semaphore;
 import java.util.function.Predicate;
 
 import app.Thread.ThPlaySong;
+import app.Thread.ThStopSong;
 import app.model.Model;
 import javafx.application.Platform;
 import javafx.scene.media.Media;
@@ -113,22 +114,17 @@ public class RiproduzioneMp3 {
 	private static void setCurrentSong() {
 		currentSong=songs.get(idxCurrentSong);
 	}
-	public static void setCurrentSong(String song) {
-		for(String s:songs) 
-			if(s.equals(song)) {
-				idxCurrentSong=getIDbyName(s);
-				setCurrentSong();
-				isMediaPLayerStopped=false;
-				new ThPlaySong().start();
-				return;
-			}
+	public static void setCurrentSong(int IDXsong) {
+		idxCurrentSong=IDXsong;
+		setCurrentSong();
+		isMediaPLayerStopped=false;
+		if(isPlaying()) {
+			mediaPlayer.stop();
+			new ThPlaySong().start();
+			mutexPlay.release();
+		}
 	}
-	private static int getIDbyName(String songName) {
-		for(int i=0;i<songs.size();i++)
-			if(songs.get(i).equals(songName))
-				return i;
-		return idxCurrentSong;
-	}
+
 	private static boolean isPlaying() {
 		return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
 	}
@@ -157,8 +153,8 @@ public class RiproduzioneMp3 {
 	public static ArrayList<String> getCoda(){
 		return songs;
 	}
-	public static String getCurrentSong() {
-		return currentSong;
+	public static int getCurrentSongIdx() {
+		return idxCurrentSong;
 	}
 	public static boolean IsCodaExist() {
 		return songs.size()>0;
