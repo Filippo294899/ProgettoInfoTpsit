@@ -84,7 +84,6 @@ public class RiproduzioneMp3 {
                 	idxCurrentSong+=1;
                     setCurrentSong();
                     try {
-                    	
 						Thread.currentThread().sleep(100);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -121,15 +120,17 @@ public class RiproduzioneMp3 {
 	public static String getStato() {
 		if(isPlaying())
 			return "In riproduzone "+Model.togliEstensione(currentSong,t -> t!='.') +"....";
+		if(isMediaPLayerStopped)
+			return "Canzone in pausa";
 		return "Nessuna canzone in riproduzione";
 	}
 	public static String getTimeSong() {
-		if(isPlaying())
+		if(isPlaying()||isMediaPLayerStopped)
 			return String.format("%.2f", mediaPlayer.getCurrentTime().toMinutes());
 		return "0";
 	}
 	public static int getLenghtSong() {
-		if(isPlaying())
+		if(isPlaying()||isMediaPLayerStopped)
 			return (int)mediaPlayer.getTotalDuration().toSeconds();
 		return 1;
 	}
@@ -137,4 +138,5 @@ public class RiproduzioneMp3 {
 		if(isPlaying())
 			mediaPlayer.seek(Duration.seconds(time));
 	}
+
 }

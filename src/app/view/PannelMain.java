@@ -15,6 +15,10 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.awt.Panel;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class PannelMain extends JPanel {
 
@@ -31,6 +35,9 @@ public class PannelMain extends JPanel {
 	private JLabel lbltit;
 	private JSlider SliderTimeSong;
     private JLabel lblTimeSong;
+    
+    private boolean isSopraSlider;
+    private boolean isSliderClicked;
     
 	public PannelMain( Controller c , FrameLogin frame) {
 		
@@ -100,6 +107,34 @@ public class PannelMain extends JPanel {
         SliderTimeSong.setBounds(357, 495, 318, 26);
         SliderTimeSong.setMinimum(0);
         SliderTimeSong.addChangeListener(e -> onSliderTimeSong());
+        SliderTimeSong.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				isSliderClicked=false;
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				isSliderClicked=true;	
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				isSopraSlider=false;				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				isSopraSlider=true;
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
 		add(SliderTimeSong);
 		
 		lblTimeSong = new JLabel("",SwingConstants.CENTER);
@@ -159,8 +194,15 @@ public class PannelMain extends JPanel {
 	private void setLblTimeSong() {
 		lblTimeSong.setText(controller.getTimeSong()+" secondi");
 	}
-	private void setSliderTimeSong() {
+	private void setSliderMaxTimeSong() {
 		SliderTimeSong.setMaximum(controller.getLenghtSong());
+	}
+	
+	private int varibailePerFarFuzionarePiuOMenoLoSlider=0;
+	private void setSliderValue() {
+		varibailePerFarFuzionarePiuOMenoLoSlider++;
+		if(varibailePerFarFuzionarePiuOMenoLoSlider%2==0)
+			SliderTimeSong.setValue(SliderTimeSong.getValue()+1);
 	}
 	
 	//bottoni:
@@ -186,15 +228,15 @@ public class PannelMain extends JPanel {
 	}
 	
 	private void onSliderTimeSong() {
-		controller.setTimeSong(SliderTimeSong.getValue());
+		if(isSopraSlider&isSliderClicked)
+			controller.setTimeSong(SliderTimeSong.getValue());
 	}
 	
-	
-	
-	public void update() {	//eseguita ogni secondo fino alla chiusura
+	public void update() {	//eseguita ogni mezzo secondo fino alla chiusura
 		addCartelleUtenteButton(); 
 		setLblTit();
 		setLblTimeSong();
-		setSliderTimeSong();
+		setSliderMaxTimeSong();
+		setSliderValue();
 	}
 }
