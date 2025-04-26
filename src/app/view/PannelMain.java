@@ -3,22 +3,22 @@ package app.view;
 import app.Thread.ThUpdate;
 import app.controller.Controller;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.LayoutManager;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-import java.awt.Panel;
-import java.awt.Rectangle;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+
 
 public class PannelMain extends JPanel {
 
@@ -215,7 +215,7 @@ public class PannelMain extends JPanel {
 	}
 	
 	private void onBtnCaricaMp3() {
-		controller.AddFileMp3();
+		showFileChooser();
 	}
 	private void onBtnIndietro() {
 		controller.ScalaCanzone();
@@ -232,6 +232,31 @@ public class PannelMain extends JPanel {
 			controller.setTimeSong(SliderTimeSong.getValue());
 	}
 	
+	
+	private void showFileChooser() {
+        JFileChooser selettore = new JFileChooser();
+        selettore.setMultiSelectionEnabled(true);
+        selettore.setFileFilter(new FileNameExtensionFilter("File audio (.mp3)", "mp3"));	
+
+        int risultato = selettore.showOpenDialog(frame);
+        
+        if (risultato == JFileChooser.APPROVE_OPTION) 
+        	controller.AddFileMp3(selettore.getSelectedFiles());
+        else 
+            Allert("Errore nella selezione dei file");   
+	}
+	private void Allert(String allertString) {
+	    JOptionPane.showOptionDialog(
+	            this, 
+	            allertString, // Messaggio di errore
+	            "Errore Login", // Titolo della finestra
+	            JOptionPane.DEFAULT_OPTION, // Tipo di finestra
+	            JOptionPane.ERROR_MESSAGE, // Icona dell'errore
+	            null, // Non ci sono icone personalizzate
+	            new Object[] { "OK" }, // Pulsante OK per continuare
+	            "OK" // Default button
+	        );
+	}
 	public void update() {	//eseguita ogni mezzo secondo fino alla chiusura
 		addCartelleUtenteButton(); 
 		setLblTit();

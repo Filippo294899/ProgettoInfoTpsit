@@ -7,8 +7,6 @@ import app.view.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.function.Predicate;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Controller {
 	private Model model;
@@ -65,23 +63,10 @@ public class Controller {
 		return model.getElencoCanzoniCartellaRiprodotta();
 	}
 	public String togliTXTtoCanzone(String s) {
-		return model.togliEstensione(s,c-> c!='.');
+		return Model.togliEstensione(s,c-> c!='.');
 	}
-	public void AddFileMp3() {
-        // Crea il selettore di file
-        JFileChooser selettore = new JFileChooser();
-        selettore.setMultiSelectionEnabled(true);
-        selettore.setFileFilter(new FileNameExtensionFilter("File audio (.mp3)", "mp3"));	//da cambiare ad mp3 senno non va
-
-        // Mostra la finestra di selezione
-        int risultato = selettore.showOpenDialog(frame);
-        
-        if (risultato == JFileChooser.APPROVE_OPTION) 
-        	model.SaveFile(selettore.getSelectedFiles());	//ritorna array file
-        else 
-            System.out.println("Selezione file annullata.");
-            
-    
+	public void AddFileMp3(File[] files) {
+		model.SaveFile(files);
 	}
 	
 	
