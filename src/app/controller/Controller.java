@@ -97,7 +97,19 @@ public class Controller {
 	public void setTimeSong(int time) {
 		RiproduzioneMp3.setTimeSong(time);
 	}
-
+	
+	public ArrayList<String> getCodaCanzoni(){
+		return RiproduzioneMp3.getCoda();
+	}
+	public String getCurrentSong(){
+		return RiproduzioneMp3.getCurrentSong();
+	}
+	public boolean IsCodaExist() {
+		return RiproduzioneMp3.IsCodaExist();
+	}
+	public void setCurrentSong(String song) {
+		RiproduzioneMp3.setCurrentSong(song);
+	}
 	
 	
 	

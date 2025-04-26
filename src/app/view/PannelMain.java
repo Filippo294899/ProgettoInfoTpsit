@@ -18,6 +18,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.Color;
+import java.awt.Container;
 
 
 public class PannelMain extends JPanel {
@@ -35,6 +37,8 @@ public class PannelMain extends JPanel {
 	private JLabel lbltit;
 	private JSlider SliderTimeSong;
     private JLabel lblTimeSong;
+	private JPanel panelCodaCanzoni;
+	private JScrollPane scrollPaneCodaCanzoni;
     
     private boolean isSopraSlider;
     private boolean isSliderClicked;
@@ -56,7 +60,7 @@ public class PannelMain extends JPanel {
 		add(lblTitolo);
 		
 		JScrollPane scrollPaneCartelleUtente = new JScrollPane();
-		scrollPaneCartelleUtente.setBounds(10, 40, 133, 425);
+		scrollPaneCartelleUtente.setBounds(20, 57, 133, 372);
 		add(scrollPaneCartelleUtente);
 		
 		JLabel lblCartelle = new JLabel("Cartelle Utente",SwingConstants.CENTER);
@@ -75,7 +79,7 @@ public class PannelMain extends JPanel {
 		add(btnLogout);
 		
 		JButton btnCaricaMp3 = new JButton("Carica Mp3");
-		btnCaricaMp3.setBounds(10, 476, 133, 31);
+		btnCaricaMp3.setBounds(20, 466, 133, 27);
 		btnCaricaMp3.addActionListener(e -> onBtnCaricaMp3());
 		add(btnCaricaMp3);
 		
@@ -141,6 +145,19 @@ public class PannelMain extends JPanel {
 		lblTimeSong.setBounds(357, 519, 308, 17);
 		add(lblTimeSong);
 		
+		scrollPaneCodaCanzoni = new JScrollPane();
+		scrollPaneCodaCanzoni.setBounds(530, 53, 160, 376);
+		add(scrollPaneCodaCanzoni);
+		
+		JLabel lblCoda = new JLabel("Coda", SwingConstants.CENTER);
+		lblCoda.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		scrollPaneCodaCanzoni.setColumnHeaderView(lblCoda);
+		
+		panelCodaCanzoni = new JPanel();
+		panelCodaCanzoni.setLayout((LayoutManager) new BoxLayout(panelCodaCanzoni, BoxLayout.Y_AXIS));
+		scrollPaneCodaCanzoni.setViewportView(panelCodaCanzoni);
+				
+		
 		new ThUpdate(this).start();
 	}
 	//update
@@ -157,7 +174,7 @@ public class PannelMain extends JPanel {
 					remove(scrollPaneCanzoni);
 
 				scrollPaneCanzoni = new JScrollPane();
-				scrollPaneCanzoni.setBounds(141, 40, 133, 425);
+				scrollPaneCanzoni.setBounds(151, 57, 160, 372);
 				add(scrollPaneCanzoni);
 
 				JLabel lblCanzoni = new JLabel("Canzoni - " + s, SwingConstants.CENTER);
@@ -186,6 +203,28 @@ public class PannelMain extends JPanel {
 		
 		panelCanzoni.revalidate();
 		panelCanzoni.repaint();
+	}
+	public void addCodaCanzoni() {		
+		panelCodaCanzoni.removeAll();
+
+		for(String s:controller.getCodaCanzoni()) {
+			
+			JButton btnNewButton = new JButton(s);
+			if(s.equals(controller.getCurrentSong()))
+				btnNewButton.setBackground(Color.green);
+
+			
+			panelCodaCanzoni.add(btnNewButton);
+			
+			btnNewButton.addActionListener(e -> {				
+				controller.setCurrentSong(s);
+			});
+		}
+		panelCodaCanzoni.revalidate();
+		panelCodaCanzoni.repaint();
+	}
+	public void setVisibileScrollCoda(boolean flag) {
+		scrollPaneCodaCanzoni.setVisible(flag);
 	}
 	
 	private void setLblTit() {
@@ -259,6 +298,13 @@ public class PannelMain extends JPanel {
 	}
 	public void update() {	//eseguita ogni mezzo secondo fino alla chiusura
 		addCartelleUtenteButton(); 
+		
+		if(controller.IsCodaExist()) {
+			setVisibileScrollCoda(true);
+			addCodaCanzoni();
+		}else
+			setVisibileScrollCoda(false);
+		
 		setLblTit();
 		setLblTimeSong();
 		setSliderMaxTimeSong();

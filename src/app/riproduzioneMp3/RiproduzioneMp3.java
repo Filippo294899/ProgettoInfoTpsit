@@ -19,7 +19,7 @@ import javafx.util.Duration;
 public class RiproduzioneMp3 {
 	private static ArrayList<String> songs=new ArrayList<String>();
 	private static Integer idxCurrentSong=null;
-	private static String currentSong=null;
+	private static String currentSong="";
 	private static MediaPlayer mediaPlayer=null;
 	private static boolean javafxInizializzato = false;
 	private static boolean isMediaPLayerStopped = false;
@@ -113,6 +113,22 @@ public class RiproduzioneMp3 {
 	private static void setCurrentSong() {
 		currentSong=songs.get(idxCurrentSong);
 	}
+	public static void setCurrentSong(String song) {
+		for(String s:songs) 
+			if(s.equals(song)) {
+				idxCurrentSong=getIDbyName(s);
+				setCurrentSong();
+				isMediaPLayerStopped=false;
+				new ThPlaySong().start();
+				return;
+			}
+	}
+	private static int getIDbyName(String songName) {
+		for(int i=0;i<songs.size();i++)
+			if(songs.get(i).equals(songName))
+				return i;
+		return idxCurrentSong;
+	}
 	private static boolean isPlaying() {
 		return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
 	}
@@ -137,6 +153,15 @@ public class RiproduzioneMp3 {
 	public static void setTimeSong(int time) {
 		if(isPlaying())
 			mediaPlayer.seek(Duration.seconds(time));
+	}
+	public static ArrayList<String> getCoda(){
+		return songs;
+	}
+	public static String getCurrentSong() {
+		return currentSong;
+	}
+	public static boolean IsCodaExist() {
+		return songs.size()>0;
 	}
 
 }
