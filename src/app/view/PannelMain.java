@@ -61,6 +61,8 @@ public class PannelMain extends JPanel {
     private boolean isSliderClicked;
     
 	public PannelMain( Controller c , FrameLogin frame) {
+		setForeground(new Color(0, 0, 160));
+		setBackground(new Color(0, 128, 192));
 		
 		controller=c;
 		this.frame=frame;
@@ -72,6 +74,8 @@ public class PannelMain extends JPanel {
 		controller.setCartellaPrincipale(controller.getElementoFileLogin(t-> t.equals("nome")));
 		
 		JLabel lblTitolo = new JLabel("Bentornato "+controller.getElementoFileLogin(t->t.equals("nome")),SwingConstants.CENTER);
+		lblTitolo.setForeground(new Color(0, 0, 160));
+		lblTitolo.setBackground(new Color(128, 64, 64));
 		lblTitolo.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTitolo.setBounds(10, 11, 680, 31);
 		add(lblTitolo);
@@ -81,6 +85,7 @@ public class PannelMain extends JPanel {
 		add(scrollPaneCartelleUtente);
 		
 		JLabel lblCartelle = new JLabel("Cartelle Utente",SwingConstants.CENTER);
+		lblCartelle.setForeground(new Color(0, 0, 64));
 		lblCartelle.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		scrollPaneCartelleUtente.setColumnHeaderView(lblCartelle);
 		
@@ -90,41 +95,50 @@ public class PannelMain extends JPanel {
 		
 		
 		JButton btnLogout = new JButton("Logout");
+		btnLogout.setForeground(new Color(0, 0, 64));
 		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnLogout.setBounds(593, 11, 97, 31);
 		btnLogout.addActionListener(e -> onBtnLogout());
 		add(btnLogout);
 		
 		JButton btnCaricaMp3 = new JButton("Carica Mp3");
+		btnCaricaMp3.setForeground(new Color(0, 0, 64));
 		btnCaricaMp3.setBounds(20, 466, 133, 27);
 		btnCaricaMp3.addActionListener(e -> onBtnCaricaMp3());
 		add(btnCaricaMp3);
 		
 		btnPlay = new JButton("Play");
+		btnPlay.setForeground(new Color(0, 0, 64));
         btnPlay.setBounds(438, 468, 71, 27);
         btnPlay.addActionListener(e -> onBtnPlay() );
         add(btnPlay);
         
         btnPausa = new JButton("Pausa");
+        btnPausa.setForeground(new Color(0, 0, 64));
         btnPausa.setBounds(519, 468, 71, 27);
         btnPausa.addActionListener(e -> onBtnPausa() );
         add(btnPausa);
         
         btnAvanti = new JButton(">>");
+        btnAvanti.setForeground(new Color(0, 0, 64));
         btnAvanti.setBounds(604, 468, 71, 27);
         btnAvanti.addActionListener(e -> onBtnAvanti() );
         add(btnAvanti);
         
         btnIndietro = new JButton("<<");
+        btnIndietro.setForeground(new Color(0, 0, 64));
         btnIndietro.setBounds(357, 468, 71, 27);
         btnIndietro.addActionListener(e -> onBtnIndietro() );
         add(btnIndietro);
         
         lbltit = new JLabel("",SwingConstants.CENTER);
+        lbltit.setForeground(new Color(0, 0, 160));
         lbltit.setBounds(357, 440, 318, 17);
         add(lbltit);
 		
         SliderTimeSong = new JSlider();
+        SliderTimeSong.setForeground(new Color(0, 0, 0));
+        SliderTimeSong.setBackground(new Color(0, 128, 192));
         SliderTimeSong.setBounds(357, 495, 318, 26);
         SliderTimeSong.setMinimum(0);
         SliderTimeSong.addChangeListener(e -> onSliderTimeSong());
@@ -159,6 +173,7 @@ public class PannelMain extends JPanel {
 		add(SliderTimeSong);
 		
 		lblTimeSong = new JLabel("",SwingConstants.CENTER);
+		lblTimeSong.setForeground(new Color(0, 0, 160));
 		lblTimeSong.setBounds(357, 519, 308, 17);
 		add(lblTimeSong);
 		
@@ -167,6 +182,7 @@ public class PannelMain extends JPanel {
 		add(scrollPaneCodaCanzoni);
 		
 		JLabel lblCoda = new JLabel("Coda", SwingConstants.CENTER);
+		lblCoda.setForeground(new Color(0, 0, 160));
 		lblCoda.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		scrollPaneCodaCanzoni.setColumnHeaderView(lblCoda);
 		
@@ -176,10 +192,12 @@ public class PannelMain extends JPanel {
 				
 		
 		lblgenereCanzone = new JLabel("",SwingConstants.CENTER);
+		lblgenereCanzone.setForeground(new Color(0, 0, 160));
 		lblgenereCanzone.setBounds(163, 473, 184, 13);
 		add(lblgenereCanzone);
 	
 		JButton btnGeneraPlaylisyt = new JButton("Genera Playlist");
+		btnGeneraPlaylisyt.setForeground(new Color(0, 0, 64));
 		btnGeneraPlaylisyt.addActionListener( e-> onBtnGeneraPlaylisyt());
 		btnGeneraPlaylisyt.setBounds(20, 503, 133, 27);
 		add(btnGeneraPlaylisyt);
@@ -270,6 +288,7 @@ public class PannelMain extends JPanel {
 	private int varibailePerFarFuzionarePiuOMenoLoSlider=0;
 	private JLabel lblNewLabel;
 	private void setSliderValue() {
+		
 		varibailePerFarFuzionarePiuOMenoLoSlider++;
 		if(varibailePerFarFuzionarePiuOMenoLoSlider%2==0)
 			SliderTimeSong.setValue(SliderTimeSong.getValue()+1);

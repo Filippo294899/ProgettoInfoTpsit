@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollBar;
+import java.awt.Color;
 
 public class FrameLogin extends JFrame {
 
@@ -45,6 +46,8 @@ public class FrameLogin extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 380, 500);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 128, 192));
+		contentPane.setForeground(Color.CYAN);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		setContentPane(contentPane);
@@ -61,10 +64,12 @@ public class FrameLogin extends JFrame {
 		contentPane.add(lbPassword);
 		
 		passwordMainPassword = new JPasswordField();
+		passwordMainPassword.setBackground(Color.LIGHT_GRAY);
 		passwordMainPassword.setBounds(157, 259, 162, 19);
 		contentPane.add(passwordMainPassword);
 		
 		textEmail = new JTextField();
+		textEmail.setBackground(Color.LIGHT_GRAY);
 		textEmail.setBounds(157, 149, 162, 19);
 		contentPane.add(textEmail);
 		textEmail.setColumns(10);
@@ -77,11 +82,13 @@ public class FrameLogin extends JFrame {
 		contentPane.add(btnNascondiPassword);
 		
 		lbTitoloPaginaLogin = new JLabel("Login",SwingConstants.CENTER);
+		lbTitoloPaginaLogin.setForeground(new Color(128, 64, 64));
 		lbTitoloPaginaLogin.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lbTitoloPaginaLogin.setBounds(10, 43, 346, 54);
 		contentPane.add(lbTitoloPaginaLogin);
 		
 		btnInviaDati = new JButton("Accedi");
+		btnInviaDati.setBackground(Color.LIGHT_GRAY);
 		btnInviaDati.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnInviaDati.addActionListener((ActionEvent e)-> onBtnInviaDati(e));
 		btnInviaDati.setBounds(145, 323, 109, 21);
@@ -93,11 +100,13 @@ public class FrameLogin extends JFrame {
 		contentPane.add(lblNomeUtente);
 		
 		textNomeUtente = new JTextField();
+		textNomeUtente.setBackground(Color.LIGHT_GRAY);
 		textNomeUtente.setColumns(10);
 		textNomeUtente.setBounds(157, 202, 162, 19);
 		contentPane.add(textNomeUtente);
 		
 		btnRegistrati = new JButton("Registrati");
+		btnRegistrati.setBackground(Color.LIGHT_GRAY);
 		btnRegistrati.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnRegistrati.setBounds(145, 412, 109, 23);
 		btnRegistrati.addActionListener(e -> onBtnRegistrati(e) );
