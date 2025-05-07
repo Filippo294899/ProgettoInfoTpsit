@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -45,31 +46,36 @@ public class FrameLogin extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 380, 500);
 		contentPane = new JPanel();
+		contentPane.setForeground(new Color(0, 255, 0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
+		contentPane.setBackground(new Color(23, 23, 23));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lbEmailUtente = new JLabel("E-mail");
+		lbEmailUtente.setForeground(new Color(0, 255, 0));
 		lbEmailUtente.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lbEmailUtente.setBounds(30, 150, 128, 13);
 		contentPane.add(lbEmailUtente);
 		
 		JLabel lbPassword = new JLabel("Password");
+		lbPassword.setForeground(new Color(0, 255, 0));
 		lbPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lbPassword.setBounds(30, 260, 128, 13);
 		contentPane.add(lbPassword);
 		
-		passwordMainPassword = new JPasswordField();
-		passwordMainPassword.setBounds(157, 259, 162, 19);
+		passwordMainPassword = new RoundedPsw(15,15);
+		passwordMainPassword.setBounds(157, 259, 162, 21);
 		contentPane.add(passwordMainPassword);
 		
-		textEmail = new JTextField();
-		textEmail.setBounds(157, 149, 162, 19);
+		textEmail = new RoundedTextField(15,15);
+		textEmail.setForeground(new Color(23, 23, 23));
+		textEmail.setBounds(157, 149, 162, 24);
 		contentPane.add(textEmail);
 		textEmail.setColumns(10);
 		
 		btnNascondiPassword = new JButton("");
+		btnNascondiPassword.setForeground(new Color(0, 128, 128));
 		btnNascondiPasswordPremuto=false;
 		btnNascondiPassword.addActionListener((ActionEvent e)-> onAddActionListener(e));
 		btnNascondiPassword.setIcon(new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioAperto.png"));
@@ -77,35 +83,44 @@ public class FrameLogin extends JFrame {
 		contentPane.add(btnNascondiPassword);
 		
 		lbTitoloPaginaLogin = new JLabel("Login",SwingConstants.CENTER);
+		lbTitoloPaginaLogin.setBackground(new Color(23, 23, 23));
+		lbTitoloPaginaLogin.setForeground(new Color(0, 255, 0));
 		lbTitoloPaginaLogin.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lbTitoloPaginaLogin.setBounds(10, 43, 346, 54);
 		contentPane.add(lbTitoloPaginaLogin);
 		
-		btnInviaDati = new JButton("Accedi");
-		btnInviaDati.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnInviaDati = new RoundedButton("Accedi", 15);
+		btnInviaDati.setForeground(new Color(0, 255, 0));
+		btnInviaDati.setBackground(new Color(23, 23, 23));
+		btnInviaDati.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 15));
 		btnInviaDati.addActionListener((ActionEvent e)-> onBtnInviaDati(e));
-		btnInviaDati.setBounds(145, 323, 109, 21);
+		btnInviaDati.setBounds(119, 322, 153, 21);
 		contentPane.add(btnInviaDati);
 		
 		JLabel lblNomeUtente = new JLabel("Nome Utente");
+		lblNomeUtente.setForeground(new Color(0, 255, 0));
 		lblNomeUtente.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNomeUtente.setBounds(30, 205, 117, 13);
 		contentPane.add(lblNomeUtente);
 		
-		textNomeUtente = new JTextField();
+		textNomeUtente = new RoundedTextField(15,15);
 		textNomeUtente.setColumns(10);
-		textNomeUtente.setBounds(157, 202, 162, 19);
+		textNomeUtente.setBounds(157, 202, 162, 23);
 		contentPane.add(textNomeUtente);
 		
-		btnRegistrati = new JButton("Registrati");
-		btnRegistrati.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnRegistrati.setBounds(145, 412, 109, 23);
+		btnRegistrati = new RoundedButton("Registrati",15);
+		btnRegistrati.setForeground(new Color(0, 255, 0));
+		btnRegistrati.setBackground(new Color(23, 23, 23));
+		btnRegistrati.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 15));
+		btnRegistrati.setBounds(119, 414, 153, 23);
 		btnRegistrati.addActionListener(e -> onBtnRegistrati(e) );
 		contentPane.add(btnRegistrati);
 		
 		lblRegistrazione = new JLabel("Non hai un profilo ?");
-		lblRegistrazione.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblRegistrazione.setBounds(138, 387, 134, 14);
+		lblRegistrazione.setForeground(new Color(0, 255, 0));
+		lblRegistrazione.setBackground(new Color(41, 41, 41));
+		lblRegistrazione.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 15));
+		lblRegistrazione.setBounds(119, 387, 181, 14);
 		contentPane.add(lblRegistrazione);
 		
 		
@@ -143,7 +158,6 @@ public class FrameLogin extends JFrame {
 	}
 	private void onBtnRegistrati(ActionEvent e){
 		lbTitoloPaginaLogin.setText("Registrazione");
-		btnInviaDati.setText("Registrati");
 		textEmail.setText("");
 		textNomeUtente.setText("");
 		passwordMainPassword.setText("");
