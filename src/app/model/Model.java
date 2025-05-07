@@ -3,6 +3,7 @@ package app.model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.function.Predicate;
@@ -158,6 +159,16 @@ public class Model {
 			}
 
 	}
+	public File getFileByName(String name) {
+		File file=new File(Model.getActuallyDirectory()+name);
+		if(file.exists())
+			return file;
+		return null;
+	}
+	public static File[] getAllFileSongs(){
+		File directory= new File(Model.getActuallyDirectory());
+		return directory.listFiles();
+	}
 	public static String getActuallyDirectory() {
 		return "CartelleFileMp3/" + nomeCartellaPrincipale+"/"+nomeCartellaRiprodotta+"/";
 	}
@@ -179,5 +190,31 @@ public class Model {
 
 	public void setNomeCartellaPrincipale(String nomeCartellaPrincipale) {
 		this.nomeCartellaPrincipale = nomeCartellaPrincipale;
+	} 
+	public void generaPLaylist(ArrayList<String> generiMusicali,String nome) {
+		if(nome.equals(""))
+			return;
+		
+		File newDirectory = new File("CartelleFileMp3/" + nomeCartellaPrincipale+"/"+nome);
+		if(!newDirectory.exists()) 
+			newDirectory.mkdir();
+		
+		File[] songs=new File("CartelleFileMp3/" + nomeCartellaPrincipale+"/Libreria").listFiles();
+		
+		for(File f:songs) {
+			if(IsGenreOfSong(generiMusicali,f))
+			 try {
+				Files.copy(f.toPath(), new File(newDirectory, f.getName()).toPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	private boolean IsGenreOfSong(ArrayList<String> generiMusicali,File song) {
+		String genereCanzone=GenereApi.detectGenre(song);
+		for(String s:generiMusicali)
+			if(genereCanzone.equals(s)) 
+				return true;
+		return false;
 	}
 }

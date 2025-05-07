@@ -1,12 +1,16 @@
 package app.view;
 
 import app.Thread.ThUpdate;
+import app.api.GenereApi;
 import app.controller.Controller;
 import app.mycomponent.MyJButton;
+import app.riproduzioneMp3.RiproduzioneMp3;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -17,11 +21,20 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.images.Artwork;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Container;
+import javax.swing.JCheckBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class PannelMain extends JPanel {
@@ -41,6 +54,8 @@ public class PannelMain extends JPanel {
     private JLabel lblTimeSong;
 	private JPanel panelCodaCanzoni;
 	private JScrollPane scrollPaneCodaCanzoni;
+	private JLabel lblgenereCanzone;
+	private JLabel lblCopertina=new JLabel("",SwingConstants.CENTER);
     
     private boolean isSopraSlider;
     private boolean isSliderClicked;
@@ -160,7 +175,17 @@ public class PannelMain extends JPanel {
 		scrollPaneCodaCanzoni.setViewportView(panelCodaCanzoni);
 				
 		
-		new ThUpdate(this).start();
+		lblgenereCanzone = new JLabel("",SwingConstants.CENTER);
+		lblgenereCanzone.setBounds(163, 473, 184, 13);
+		add(lblgenereCanzone);
+	
+		JButton btnGeneraPlaylisyt = new JButton("Genera Playlist");
+		btnGeneraPlaylisyt.addActionListener( e-> onBtnGeneraPlaylisyt());
+		btnGeneraPlaylisyt.setBounds(20, 503, 133, 27);
+		add(btnGeneraPlaylisyt);
+
+		
+		new ThUpdate(this).start();	
 	}
 	//update
 	public void addCartelleUtenteButton() {			//genera i bottoni delle cartelle e delle canzoni
@@ -243,11 +268,21 @@ public class PannelMain extends JPanel {
 	}
 	
 	private int varibailePerFarFuzionarePiuOMenoLoSlider=0;
+	private JLabel lblNewLabel;
 	private void setSliderValue() {
 		varibailePerFarFuzionarePiuOMenoLoSlider++;
 		if(varibailePerFarFuzionarePiuOMenoLoSlider%2==0)
 			SliderTimeSong.setValue(SliderTimeSong.getValue()+1);
 	}
+	public void setLblGenereCanzone() {
+		lblgenereCanzone.setText(controller.getGenereCanzone());
+	}
+	public void setImageSong() {
+		this.add(getCopertina(controller.getSongFile()));
+		revalidate();
+		repaint();
+	}
+	
 	
 	//bottoni:
 	private void onBtnLogout() {
@@ -275,8 +310,11 @@ public class PannelMain extends JPanel {
 		if(isSopraSlider&isSliderClicked)
 			controller.setTimeSong(SliderTimeSong.getValue());
 	}
-	
-	
+	private void onBtnGeneraPlaylisyt() {
+		JPannelGeneraPlaylist panelGeneraPLaylist= new JPannelGeneraPlaylist(controller);
+		panelGeneraPLaylist.setVisible(true);
+	}
+	 
 	private void showFileChooser() {
         JFileChooser selettore = new JFileChooser();
         selettore.setMultiSelectionEnabled(true);
@@ -287,7 +325,7 @@ public class PannelMain extends JPanel {
         if (risultato == JFileChooser.APPROVE_OPTION) 
         	controller.AddFileMp3(selettore.getSelectedFiles());
         else 
-            Allert("Errore nella selezione dei file");   
+            Allert("Errore nella selezione dei file"); 
 	}
 	private void Allert(String allertString) {
 	    JOptionPane.showOptionDialog(
@@ -307,12 +345,42 @@ public class PannelMain extends JPanel {
 		if(controller.IsCodaExist()) {
 			setVisibileScrollCoda(true);
 			addCodaCanzoni();
-		}else
+			setLblGenereCanzone();
+			setImageSong();
+		}else {
 			setVisibileScrollCoda(false);
+			lblgenereCanzone.setText("");
+		}
+			
 		
 		setLblTit();
 		setLblTimeSong();
 		setSliderMaxTimeSong();
 		setSliderValue();
+	}
+	
+	private JLabel getCopertina(File file) {
+	    try {
+	        AudioFile audioFile = AudioFileIO.read(file);
+	        Tag tag = audioFile.getTag();
+	        Artwork artwork = tag.getFirstArtwork();
+	        
+	        if (artwork != null) {
+	            byte[] imageData = artwork.getBinaryData();
+	            ImageIcon imageIcon = new ImageIcon(imageData);
+	            Image image = imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+	            lblCopertina.setText("");
+	            lblCopertina.setIcon(new ImageIcon(image));
+	        } else {
+	        	lblCopertina.setIcon(null);
+	        	lblCopertina.setText("Nessuna copertina disponibile");
+	        }
+	    } catch (Exception e) {
+	    	lblCopertina.setText("Errore nel caricamento della copertina");
+	        e.printStackTrace();
+	    }
+
+	    lblCopertina.setBounds(300, 150, 225, 225); 
+	    return lblCopertina;
 	}
 }

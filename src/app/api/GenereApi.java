@@ -12,6 +12,10 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 
+import app.model.Model;
+import app.riproduzioneMp3.RiproduzioneMp3;
+
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,7 +28,7 @@ public class GenereApi {
 
 	private static final String[] ID3_GENRES = { "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge",
 			"Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno",
-			"Industrial", "Ballad"
+			"Industrial", "Ballad","Sconosciuto"
 			// Aggiungi altri se necessario (fino a 147)
 	};
 
@@ -54,5 +58,8 @@ public class GenereApi {
 			System.err.println("Errore durante la lettura dei metadati: " + e.getMessage());
 			return "Sconosciuto";
 		}
+	}
+	public static String[] getAllGenre(){
+		return ID3_GENRES;
 	}
 }

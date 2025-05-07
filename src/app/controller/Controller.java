@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.Thread.*;
+import app.api.GenereApi;
 import app.model.Model;
 import app.riproduzioneMp3.RiproduzioneMp3;
 import app.view.*;
@@ -110,7 +111,17 @@ public class Controller {
 	public void setCurrentSong(int IDXsong) {
 		RiproduzioneMp3.setCurrentSong(IDXsong);
 	}
-	
-	
+	public String getGenereCanzone(){
+		return GenereApi.detectGenre(model.getFileByName(RiproduzioneMp3.getNameCurrentSong()));
+	}
+	public String[] getAllgeneriMusicali(){
+		return GenereApi.getAllGenre();
+	}
+	public void generaPlaylist(ArrayList<String> generi,String nome) {
+		model.generaPLaylist(generi,nome);
+	}
+	public File getSongFile() {
+		return model.getFileByName(RiproduzioneMp3.getNameCurrentSong());
+	}
 	
 }

@@ -156,8 +156,12 @@ public class RiproduzioneMp3 {
 	public static int getCurrentSongIdx() {
 		return idxCurrentSong;
 	}
+	public static String getNameCurrentSong() {
+		return songs.get(RiproduzioneMp3.getCurrentSongIdx());
+	}
 	public static boolean IsCodaExist() {
 		return songs.size()>0;
 	}
+
 
 }
