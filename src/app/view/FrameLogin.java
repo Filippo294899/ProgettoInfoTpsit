@@ -142,7 +142,8 @@ public class FrameLogin extends JFrame {
 			else
 				changeInPanelloMain();
 		} else {
-			controller.RegistrazioneUtente(textNomeUtente.getText(), textEmail.getText(),passwordMainPassword.getText());
+			controller.RegistrazioneUtente(textNomeUtente.getText(), textEmail.getText(),
+					passwordMainPassword.getText());
 			registrazione = false;
 			lbTitoloPaginaLogin.setText("Login");
 			btnInviaDati.setText("Login");

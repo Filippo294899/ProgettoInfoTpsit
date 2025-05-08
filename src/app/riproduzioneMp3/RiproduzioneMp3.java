@@ -175,5 +175,7 @@ public class RiproduzioneMp3 {
 	public static boolean IsCodaExist() {
 		return songs.size() > 0;
 	}
-
+	public static boolean IsCanzoneStopped() {
+		return isMediaPLayerStopped;
+	}
 }

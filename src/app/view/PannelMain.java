@@ -307,8 +307,6 @@ public class PannelMain extends JPanel {
 	}
 
 	private int varibailePerFarFuzionarePiuOMenoLoSlider = 0;
-	private JLabel lblNewLabel;
-
 	private void setSliderValue() {
 
 		varibailePerFarFuzionarePiuOMenoLoSlider++;
@@ -402,7 +400,9 @@ public class PannelMain extends JPanel {
 		setLblTit();
 		setLblTimeSong();
 		setSliderMaxTimeSong();
-		setSliderValue();
+		
+		if(controller.IsCanzoneNNstopped())
+			setSliderValue();
 	}
 
 	private JLabel getCopertina(File file) {
