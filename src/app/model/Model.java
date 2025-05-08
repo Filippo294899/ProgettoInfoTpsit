@@ -55,26 +55,31 @@ public class Model {
 				boolean Briga1, Briga2, Briga3;
 
 				String riga1 = scanner.nextLine();
-				if (riga1.equals(nome))
+				if ((riga1.trim()).equals(nome))
 					Briga1 = true;
 				else
 					Briga1 = false;
-
+				
 				String riga2 = scanner.nextLine();
-				if (riga2.equals(email))
+				if ((riga2.trim()).equals(email))
 					Briga2 = true;
 				else
 					Briga2 = false;
 
 				String riga3 = scanner.nextLine();
-				if (riga2.equals(psw))
+				if ((riga3.trim()).equals(psw))
 					Briga3 = true;
 				else
 					Briga3 = false;
 
+				System.err.println(riga1 + "=="+nome+" ->"+Briga1+"\n" + riga2+  "=="+email+" ->"+Briga2+"\n"+ riga3+"=="+psw+" ->"+Briga2);
+				
+				
 				if (Briga1 && Briga2 && Briga3) {
 					SaveProfile(nome, email, psw);
+					System.out.println("salvato profilo");
 					return true;
+
 				}
 
 				scanner.close();

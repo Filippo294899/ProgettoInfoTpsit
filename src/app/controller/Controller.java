@@ -23,16 +23,12 @@ public class Controller {
 	}
 			
 	public boolean login(String nome, String email, String psw) {
-		return UtenteEsiste(nome, email, psw);
+		return model.IsUtenteEsistente(nome, email, psw);
 	}	
 	public void RegistrazioneUtente(String nome, String email, String psw) {
 		new ThRegistraUtente(nome,email,psw).start();
 	}	
 
-	private boolean UtenteEsiste(String nome, String email, String psw) {
-		return model.IsUtenteEsistente(nome, email, psw);
-	}
-	
 	public Boolean cookieLogin() {
 		if(new File("Credenziali/").listFiles().length>0)
 			return true;
