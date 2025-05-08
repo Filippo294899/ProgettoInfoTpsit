@@ -7,6 +7,7 @@ import app.controller.Controller;
 
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -43,25 +44,87 @@ public class FrameLogin extends JFrame {
      * @param c Il controller che gestisce la logica di login e registrazione.
      */
     public FrameLogin(Controller c) {
-        controller = c;
-        registrazione = false;
+    	controller = c;
+		registrazione = false;
 
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 380, 500);
-        contentPane = new JPanel();
-        contentPane.setBackground(new Color(81, 81, 81));
-        contentPane.setForeground(new Color(51, 153, 255));
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 380, 500);
+		contentPane=new JPanel();		
+		contentPane.setBackground(new Color(128, 128, 128));
+		contentPane.setForeground(new Color(51, 153, 255));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        // Inizializzazione dei componenti della finestra (etichette, campi di testo, pulsanti, etc.)
-        // ...
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 
-        // Verifica se l'utente è già loggato tramite un cookie
-        if (controller.cookieLogin())
-            changeInPanelloMain();
+		JLabel lbEmailUtente = new JLabel("E-mail");
+		lbEmailUtente.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbEmailUtente.setBounds(30, 150, 128, 13);
+		contentPane.add(lbEmailUtente);
+
+		JLabel lbPassword = new JLabel("Password");
+		lbPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbPassword.setBounds(30, 260, 128, 13);
+		contentPane.add(lbPassword);
+
+		passwordMainPassword = new JPasswordField();
+		passwordMainPassword.setBackground(Color.LIGHT_GRAY);
+		passwordMainPassword.setBounds(157, 259, 162, 19);
+		contentPane.add(passwordMainPassword);
+
+		textEmail = new JTextField();
+		textEmail.setBackground(Color.LIGHT_GRAY);
+		textEmail.setBounds(157, 149, 162, 19);
+		contentPane.add(textEmail);
+		textEmail.setColumns(10);
+
+		btnNascondiPassword = new JButton("");
+		btnNascondiPasswordPremuto = false;
+		btnNascondiPassword.addActionListener((ActionEvent e) -> onAddActionListener(e));
+		btnNascondiPassword.setIcon(
+				new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioAperto.png"));
+		btnNascondiPassword.setBounds(335, 259, 21, 19);
+		contentPane.add(btnNascondiPassword);
+
+		lbTitoloPaginaLogin = new JLabel("Login", SwingConstants.CENTER);
+		lbTitoloPaginaLogin.setForeground(new Color(128, 64, 64));
+		lbTitoloPaginaLogin.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lbTitoloPaginaLogin.setBounds(10, 43, 346, 54);
+		contentPane.add(lbTitoloPaginaLogin);
+
+		btnInviaDati = new JButton("Accedi");
+		btnInviaDati.setBackground(Color.LIGHT_GRAY);
+		btnInviaDati.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnInviaDati.addActionListener((ActionEvent e) -> onBtnInviaDati(e));
+		btnInviaDati.setBounds(145, 323, 109, 21);
+		contentPane.add(btnInviaDati);
+
+		JLabel lblNomeUtente = new JLabel("Nome Utente");
+		lblNomeUtente.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNomeUtente.setBounds(30, 205, 117, 13);
+		contentPane.add(lblNomeUtente);
+
+		textNomeUtente = new JTextField();
+		textNomeUtente.setBackground(Color.LIGHT_GRAY);
+		textNomeUtente.setColumns(10);
+		textNomeUtente.setBounds(157, 202, 162, 19);
+		contentPane.add(textNomeUtente);
+
+		btnRegistrati = new JButton("Registrati");
+		btnRegistrati.setBackground(Color.LIGHT_GRAY);
+		btnRegistrati.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnRegistrati.setBounds(145, 412, 109, 23);
+		btnRegistrati.addActionListener(e -> onBtnRegistrati(e));
+		contentPane.add(btnRegistrati);
+
+		lblRegistrazione = new JLabel("Non hai un profilo ?");
+		lblRegistrazione.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblRegistrazione.setBounds(138, 380, 134, 21);
+		contentPane.add(lblRegistrazione);
+
+		if (controller.cookieLogin())
+			changeInPanelloMain();
     }
 
     /**
