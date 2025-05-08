@@ -35,7 +35,14 @@ import java.awt.Container;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/**
+ * PannelMain è un JPanel che rappresenta l'interfaccia principale per l'utente, fornendo 
+ * funzionalità per interagire con il lettore musicale, inclusi la riproduzione di brani, 
+ * la gestione delle playlist e l'aggiornamento dello stato del brano.
+ * 
+ * Questa classe gestisce le interazioni dell'utente, come il clic sui pulsanti, gli aggiornamenti 
+ * delle playlist e visualizza il brano corrente, il tempo e il genere.
+ */
 public class PannelMain extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -58,7 +65,12 @@ public class PannelMain extends JPanel {
 
 	private boolean isSopraSlider;
 	private boolean isSliderClicked;
-
+    /**
+     * Costruisce l'oggetto PannelMain con un dato Controller e FrameLogin.
+     * 
+     * @param c Il controller che gestisce i dati musicali e l'interazione dell'utente.
+     * @param frame Il frame che contiene il pannello principale.
+     */
 	public PannelMain(Controller c, FrameLogin frame) {
 		setForeground(new Color(0, 0, 160));
 		setBackground(new Color(81, 81, 81));
@@ -220,6 +232,10 @@ public class PannelMain extends JPanel {
 	}
 
 	// update
+	
+	  /**
+     * Genera i pulsanti per le cartelle dell'utente e le canzoni.
+     */
 	public void addCartelleUtenteButton() { // genera i bottoni delle cartelle e delle canzoni
 		panelCartelleCanzoni.removeAll();
 		for (String s : controller.getElencoCartelleUtente()) {
@@ -252,7 +268,11 @@ public class PannelMain extends JPanel {
 		panelCartelleCanzoni.revalidate();
 		panelCartelleCanzoni.repaint();
 	}
-
+	/**
+     * Aggiorna l'elenco delle canzoni in base alla cartella selezionata.
+     * 
+     * @param s Il nome della cartella.
+     */
 	public void addCanzoniPanelCanzoni() { // da finire, non si aggiornano le canzoni in tempo reale
 		panelCanzoni.removeAll();
 
@@ -267,8 +287,12 @@ public class PannelMain extends JPanel {
 		panelCanzoni.repaint();
 	}
 
-	private int variabileDiCiclo;
+	
 
+    /**
+     * Aggiorna la visualizzazione della coda delle canzoni.
+     */
+	private int variabileDiCiclo;
 	public void addCodaCanzoni() {
 		panelCodaCanzoni.removeAll();
 		ArrayList<String> songs = controller.getCodaCanzoni();
@@ -289,79 +313,114 @@ public class PannelMain extends JPanel {
 		panelCodaCanzoni.revalidate();
 		panelCodaCanzoni.repaint();
 	}
-
+	/**
+     * Modifica la visibilità dello scrollpane della coda delle canzoni.
+     * 
+     * @param flag Un valore booleano che indica se lo scrollpane deve essere visibile.
+     */
 	public void setVisibileScrollCoda(boolean flag) {
 		scrollPaneCodaCanzoni.setVisible(flag);
 	}
-
+	/**
+     * Aggiorna l'etichetta del titolo con il titolo della canzone corrente.
+     */
 	private void setLblTit() {
 		lbltit.setText(controller.getStatoCanzone());
 	}
 
+    /**
+     * Aggiorna l'etichetta del tempo con il tempo della canzone corrente.
+     */
 	private void setLblTimeSong() {
 		lblTimeSong.setText(controller.getTimeSong() + " secondi");
 	}
-
+	  /**
+     * Imposta il valore massimo per lo slider del tempo della canzone.
+     */
 	private void setSliderMaxTimeSong() {
 		SliderTimeSong.setMaximum(controller.getLenghtSong());
 	}
-
+	 /**
+     * Aggiorna il valore dello slider in base al progresso della canzone.
+     */
 	private int varibailePerFarFuzionarePiuOMenoLoSlider = 0;
-	private JLabel lblNewLabel;
-
 	private void setSliderValue() {
 
 		varibailePerFarFuzionarePiuOMenoLoSlider++;
 		if (varibailePerFarFuzionarePiuOMenoLoSlider % 2 == 0)
 			SliderTimeSong.setValue(SliderTimeSong.getValue() + 1);
 	}
-
+	  /**
+     * Aggiorna l'etichetta del genere con il genere della canzone corrente.
+     */
 	public void setLblGenereCanzone() {
 		lblgenereCanzone.setText(controller.getGenereCanzone());
 	}
-
-	public void setImageSong() {
+	  /**
+     * Imposta l'immagine della copertina della canzone corrente.
+     */
+    public void setImageSong() {
 		this.add(getCopertina(controller.getSongFile()));
 		revalidate();
 		repaint();
 	}
 
 	// bottoni:
+    
+    /**
+     * Gestisce il clic sul pulsante di logout. Esegue il logout dell'utente e chiude il frame.
+     */
 	private void onBtnLogout() {
 		controller.logout();
 		frame.dispose();
 	}
-
+/**
+     * Gestisce il clic sul pulsante "Avanti". Salta alla canzone successiva.
+     */
 	private void onBtnAvanti() {
 		controller.SkipCanzone();
 	}
-
+	 /**
+     * Gestisce il clic sul pulsante "Carica MP3". Apre un selettore di file per caricare file MP3.
+     */
 	private void onBtnCaricaMp3() {
 		showFileChooser();
 	}
-
+	/**
+     * Gestisce il clic sul pulsante "Indietro". Salta alla canzone precedente.
+     */
 	private void onBtnIndietro() {
 		controller.ScalaCanzone();
 	}
-
+	  /**
+     * Gestisce il clic sul pulsante "Play". Inizia la riproduzione della canzone corrente.
+     */
 	private void onBtnPlay() {
 		controller.playSong();
 	}
-
+	  /**
+     * Gestisce il clic sul pulsante "Pausa". Mettere in pausa la canzone corrente.
+     */
 	private void onBtnPausa() {
 		controller.stopSong();
 	}
-
+	 /**
+     * Aggiorna il tempo della canzone quando lo slider viene spostato.
+     */
 	private void onSliderTimeSong() {
 		if (isSopraSlider & isSliderClicked)
 			controller.setTimeSong(SliderTimeSong.getValue());
 	}
-
+    /**
+     * Gestisce il clic sul pulsante "Genera Playlist". Apre il pannello di generazione della playlist.
+     */
 	private void onBtnGeneraPlaylisyt() {
 		JPannelGeneraPlaylist panelGeneraPLaylist = new JPannelGeneraPlaylist(controller);
 		panelGeneraPLaylist.setVisible(true);
 	}
-
+    /**
+     * Apre il selettore di file per scegliere i file MP3.
+     */
 	private void showFileChooser() {
 		JFileChooser selettore = new JFileChooser();
 		selettore.setMultiSelectionEnabled(true);
@@ -374,7 +433,11 @@ public class PannelMain extends JPanel {
 		else
 			Allert("Errore nella selezione dei file");
 	}
-
+	/*
+	* Mostra un dialogo di avviso con un dato messaggio.
+    * 
+    * @param allertString Il messaggio da visualizzare.
+    */
 	private void Allert(String allertString) {
 		JOptionPane.showOptionDialog(this, allertString, // Messaggio di errore
 				"Errore Login", // Titolo della finestra
@@ -385,7 +448,9 @@ public class PannelMain extends JPanel {
 				"OK" // Default button
 		);
 	}
-
+	  /**
+     * Aggiorna il pannello principale con lo stato corrente e le informazioni sulla canzone ogni mezzo secondo.
+     */
 	public void update() { // eseguita ogni mezzo secondo fino alla chiusura
 		addCartelleUtenteButton();
 
@@ -402,9 +467,17 @@ public class PannelMain extends JPanel {
 		setLblTit();
 		setLblTimeSong();
 		setSliderMaxTimeSong();
-		setSliderValue();
+		
+		if(controller.IsCanzoneNNstopped())
+			setSliderValue();
 	}
 
+    /**
+     * Recupera la copertina dell'album per la canzone corrente.
+     * 
+     * @param file Il file che rappresenta la canzone.
+     * @return Un JLabel che visualizza la copertina dell'album.
+     */
 	private JLabel getCopertina(File file) {
 		try {
 			AudioFile audioFile = AudioFileIO.read(file);

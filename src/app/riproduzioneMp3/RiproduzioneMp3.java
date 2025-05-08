@@ -13,167 +13,259 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-/*
- quando fai stop e rilasci il lock per start canzone, se ci sono de thread in coda parte lo stesso
- stop a volte non va
- da sistemare 
-  */
+/**
+ * La classe {@code RiproduzioneMp3} gestisce la riproduzione di file MP3
+ * in un'applicazione basata su JavaFX ma avviata in ambiente Swing.
+ * <p>
+ * Supporta operazioni come play, stop, avanzamento nella coda, gestione dello stato
+ * del lettore e sincronizzazione tra thread tramite un semaforo.
+ * </p>
+ * 
+ * <p>Utilizza internamente {@link javafx.scene.media.MediaPlayer} per la riproduzione audio.</p>
+ * 
+ * <p><b>Nota:</b> alcuni comportamenti sono da migliorare, in particolare la gestione del lock
+ * nei thread e la gestione del metodo {@code stop}.</p>
+ * 
+ */
 public class RiproduzioneMp3 {
-	private static ArrayList<String> songs = new ArrayList<String>();
-	private static Integer idxCurrentSong = null;
-	private static String currentSong = "";
-	private static MediaPlayer mediaPlayer = null;
-	private static boolean javafxInizializzato = false;
-	private static boolean isMediaPLayerStopped = false;
-	private static Semaphore mutexPlay = new Semaphore(1);
 
-	private static void inizializzaToolkit() {
-		// applicazione swing non javafx
-		if (!javafxInizializzato) {
-			Platform.startup(() -> {
-			});
-			javafxInizializzato = true;
-		}
-	}
+    /** Lista delle canzoni caricate. */
+    private static ArrayList<String> songs = new ArrayList<>();
 
-	public static void addSong(String canzone) {
-		songs.add(canzone);
-		if (idxCurrentSong == null) {
-			idxCurrentSong = 0;
-			setCurrentSong();
-		}
+    /** Indice della canzone attualmente in riproduzione. */
+    private static Integer idxCurrentSong = null;
 
-	}
+    /** Nome della canzone attuale. */
+    private static String currentSong = "";
 
-	public static void coda(Predicate<String> p) {
-		if (p.test("<<")) {
-			System.out.println("indietro....");
-			if (songs.size() <= 1 || (idxCurrentSong - 1) < 0)
-				return;
-			idxCurrentSong -= 1;
-		} else if (p.test(">>")) {
-			System.out.println("skip....");
-			if (songs.size() <= 1 || songs.size() < (idxCurrentSong + 2))
-				return;
-			idxCurrentSong += 1;
-		}
-		setCurrentSong();
+    /** Oggetto MediaPlayer per la riproduzione. */
+    private static MediaPlayer mediaPlayer = null;
 
-		isMediaPLayerStopped = false;
-		if (isPlaying()) {
-			mediaPlayer.stop();
-			new ThPlaySong().start();
-			mutexPlay.release();
-		}
-	}
+    /** Flag per controllare se JavaFX è stato inizializzato. */
+    private static boolean javafxInizializzato = false;
 
-	public static void play() {
-		try {
-			mutexPlay.acquire();
+    /** Flag che indica se la canzone è in pausa. */
+    private static boolean isMediaPLayerStopped = false;
 
-			System.out.println("play...." + currentSong);
+    /** Semaforo per sincronizzare i thread di riproduzione. */
+    private static Semaphore mutexPlay = new Semaphore(1);
 
-			inizializzaToolkit();
-			File fileAudio = new File(Model.getActuallyDirectory() + currentSong);
-			Media media = new Media(fileAudio.toURI().toString());
+    /** Inizializza il toolkit JavaFX se non è già stato fatto. */
+    private static void inizializzaToolkit() {
+        if (!javafxInizializzato) {
+            Platform.startup(() -> {});
+            javafxInizializzato = true;
+        }
+    }
 
-			if (!isMediaPLayerStopped)
-				mediaPlayer = new MediaPlayer(media);
+    /**
+     * Aggiunge una nuova canzone alla coda.
+     *
+     * @param canzone il nome del file MP3 da aggiungere
+     */
+    public static void addSong(String canzone) {
+        songs.add(canzone);
+        if (idxCurrentSong == null) {
+            idxCurrentSong = 0;
+            setCurrentSong();
+        }
+    }
 
-			mediaPlayer.play();
-			isMediaPLayerStopped = false;
+    /**
+     * Sposta la coda indietro (<<) o avanti (>>) in base al predicato passato.
+     * Se è in riproduzione, riparte automaticamente dalla nuova canzone.
+     *
+     * @param p il predicato che indica l'azione (<< o >>)
+     */
+    public static void coda(Predicate<String> p) {
+        if (p.test("<<")) {
+            if (songs.size() <= 1 || (idxCurrentSong - 1) < 0)
+                return;
+            idxCurrentSong -= 1;
+        } else if (p.test(">>")) {
+            if (songs.size() <= 1 || songs.size() < (idxCurrentSong + 2))
+                return;
+            idxCurrentSong += 1;
+        }
+        setCurrentSong();
 
-			mediaPlayer.setOnEndOfMedia(() -> {
-				System.out.println("Canzone terminata.");
-				if (songs.size() >= (idxCurrentSong + 2)) {
-					idxCurrentSong += 1;
-					setCurrentSong();
-					try {
-						Thread.currentThread().sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					new ThPlaySong().start();
-				} else
-					mediaPlayer.dispose();
-				mutexPlay.release();
-			});
+        isMediaPLayerStopped = false;
+        if (isPlaying()) {
+            mediaPlayer.stop();
+            new ThPlaySong().start();
+            mutexPlay.release();
+        }
+    }
 
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Avvia la riproduzione della canzone attuale.
+     * Se una canzone è già in riproduzione, viene ignorato.
+     */
+    public static void play() {
+        try {
+            mutexPlay.acquire();
 
-	public synchronized static void stop() {
-		inizializzaToolkit();
+            inizializzaToolkit();
+            File fileAudio = new File(Model.getActuallyDirectory() + currentSong);
+            Media media = new Media(fileAudio.toURI().toString());
 
-		if (isPlaying()) {
-			System.out.println("stop....");
-			mediaPlayer.pause();
-			isMediaPLayerStopped = true;
-			mutexPlay.release();
-		} else
-			System.out.println("nn in riproduzione");
-	}
+            if (!isMediaPLayerStopped)
+                mediaPlayer = new MediaPlayer(media);
 
-	private static void setCurrentSong() {
-		currentSong = songs.get(idxCurrentSong);
-	}
+            mediaPlayer.play();
+            isMediaPLayerStopped = false;
 
-	public static void setCurrentSong(int IDXsong) {
-		idxCurrentSong = IDXsong;
-		setCurrentSong();
-		isMediaPLayerStopped = false;
-		if (isPlaying()) {
-			mediaPlayer.stop();
-			new ThPlaySong().start();
-			mutexPlay.release();
-		}
-	}
+            mediaPlayer.setOnEndOfMedia(() -> {
+                if (songs.size() >= (idxCurrentSong + 2)) {
+                    idxCurrentSong += 1;
+                    setCurrentSong();
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    new ThPlaySong().start();
+                } else {
+                    mediaPlayer.dispose();
+                }
+                mutexPlay.release();
+            });
 
-	private static boolean isPlaying() {
-		return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
-	}
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static String getStato() {
-		if (isPlaying())
-			return "In riproduzone " + Model.togliEstensione(currentSong, t -> t != '.') + "....";
-		if (isMediaPLayerStopped)
-			return "Canzone in pausa";
-		return "Nessuna canzone in riproduzione";
-	}
+    /**
+     * Ferma (pausa) la riproduzione corrente.
+     */
+    public synchronized static void stop() {
+        inizializzaToolkit();
 
-	public static String getTimeSong() {
-		if (isPlaying() || isMediaPLayerStopped)
-			return String.format("%.2f", mediaPlayer.getCurrentTime().toMinutes());
-		return "0";
-	}
+        if (isPlaying()) {
+            mediaPlayer.pause();
+            isMediaPLayerStopped = true;
+            mutexPlay.release();
+        }
+    }
 
-	public static int getLenghtSong() {
-		if (isPlaying() || isMediaPLayerStopped)
-			return (int) mediaPlayer.getTotalDuration().toSeconds();
-		return 1;
-	}
+    /** Imposta il nome della canzone corrente in base all'indice. */
+    private static void setCurrentSong() {
+        currentSong = songs.get(idxCurrentSong);
+    }
 
-	public static void setTimeSong(int time) {
-		if (isPlaying())
-			mediaPlayer.seek(Duration.seconds(time));
-	}
+    /**
+     * Imposta direttamente l'indice della canzone attuale e avvia la riproduzione.
+     *
+     * @param IDXsong l'indice della canzone nella lista
+     */
+    public static void setCurrentSong(int IDXsong) {
+        idxCurrentSong = IDXsong;
+        setCurrentSong();
+        isMediaPLayerStopped = false;
+        if (isPlaying()) {
+            mediaPlayer.stop();
+            new ThPlaySong().start();
+            mutexPlay.release();
+        }
+    }
 
-	public static ArrayList<String> getCoda() {
-		return songs;
-	}
+    /**
+     * Verifica se il player è attualmente in riproduzione.
+     *
+     * @return true se una canzone è in riproduzione
+     */
+    private static boolean isPlaying() {
+        return mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+    }
 
-	public static int getCurrentSongIdx() {
-		return idxCurrentSong;
-	}
+    /**
+     * Restituisce una descrizione dello stato del player.
+     *
+     * @return lo stato attuale in formato stringa
+     */
+    public static String getStato() {
+        if (isPlaying())
+            return "In riproduzone " + Model.togliEstensione(currentSong, t -> t != '.') + "....";
+        if (isMediaPLayerStopped)
+            return "Canzone in pausa";
+        return "Nessuna canzone in riproduzione";
+    }
 
-	public static String getNameCurrentSong() {
-		return songs.get(RiproduzioneMp3.getCurrentSongIdx());
-	}
+    /**
+     * Restituisce il tempo attuale della canzone in minuti.
+     *
+     * @return il tempo trascorso in formato stringa
+     */
+    public static String getTimeSong() {
+        if (isPlaying() || isMediaPLayerStopped)
+            return String.format("%.2f", mediaPlayer.getCurrentTime().toMinutes());
+        return "0";
+    }
 
-	public static boolean IsCodaExist() {
-		return songs.size() > 0;
-	}
+    /**
+     * Restituisce la durata totale della canzone in secondi.
+     *
+     * @return la durata in secondi
+     */
+    public static int getLenghtSong() {
+        if (isPlaying() || isMediaPLayerStopped)
+            return (int) mediaPlayer.getTotalDuration().toSeconds();
+        return 1;
+    }
 
+    /**
+     * Imposta la posizione corrente della canzone.
+     *
+     * @param time il tempo in secondi a cui saltare
+     */
+    public static void setTimeSong(int time) {
+        if (isPlaying())
+            mediaPlayer.seek(Duration.seconds(time));
+    }
+
+    /**
+     * Restituisce la lista delle canzoni caricate.
+     *
+     * @return la lista delle canzoni
+     */
+    public static ArrayList<String> getCoda() {
+        return songs;
+    }
+
+    /**
+     * Restituisce l'indice della canzone attuale.
+     *
+     * @return l'indice corrente
+     */
+    public static int getCurrentSongIdx() {
+        return idxCurrentSong;
+    }
+
+    /**
+     * Restituisce il nome della canzone corrente.
+     *
+     * @return il nome del file MP3
+     */
+    public static String getNameCurrentSong() {
+        return songs.get(RiproduzioneMp3.getCurrentSongIdx());
+    }
+
+    /**
+     * Verifica se la coda contiene almeno una canzone.
+     *
+     * @return true se la coda non è vuota
+     */
+    public static boolean IsCodaExist() {
+        return songs.size() > 0;
+    }
+
+    /**
+     * Verifica se la canzone è stata fermata (pausata).
+     *
+     * @return true se è in pausa
+     */
+    public static boolean IsCanzoneStopped() {
+        return isMediaPLayerStopped;
+    }
 }
