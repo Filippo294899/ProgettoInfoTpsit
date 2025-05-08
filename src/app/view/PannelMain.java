@@ -78,6 +78,7 @@ public class PannelMain extends JPanel {
 		controller = c;
 		this.frame = frame;
 
+		frame.setTitle("Spanish Beat");
 		frame.setBounds(0, 0, 720, 580);
 		setBounds(0, 0, 700, 600);
 		setLayout(null);
