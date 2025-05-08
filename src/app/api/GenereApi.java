@@ -27,7 +27,7 @@ public class GenereApi {
 	}
 
 	private static final String[] ID3_GENRES = { "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge",
-			"Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno",
+			"Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Trap", "Reggae", "Rock", "Techno",
 			"Industrial", "Ballad","Sconosciuto"
 			// Aggiungi altri se necessario (fino a 147)
 	};
