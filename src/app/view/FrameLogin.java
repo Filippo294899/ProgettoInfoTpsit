@@ -24,7 +24,7 @@ import java.awt.Color;
 
 public class FrameLogin extends JFrame {
 
-	private Controller controller;	
+	private Controller controller;
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPasswordField passwordMainPassword;
@@ -39,108 +39,112 @@ public class FrameLogin extends JFrame {
 	private boolean registrazione;
 
 	public FrameLogin(Controller c) {
-		controller=c;
-		registrazione=false;
-		
+		controller = c;
+		registrazione = false;
+
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 380, 500);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(0, 128, 192));
-		contentPane.setForeground(Color.CYAN);
+		contentPane=new JPanel();		
+		contentPane.setBackground(new Color(81, 81, 81));
+		contentPane.setForeground(new Color(51, 153, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lbEmailUtente = new JLabel("E-mail");
 		lbEmailUtente.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lbEmailUtente.setBounds(30, 150, 128, 13);
 		contentPane.add(lbEmailUtente);
-		
+
 		JLabel lbPassword = new JLabel("Password");
 		lbPassword.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lbPassword.setBounds(30, 260, 128, 13);
 		contentPane.add(lbPassword);
-		
+
 		passwordMainPassword = new JPasswordField();
 		passwordMainPassword.setBackground(Color.LIGHT_GRAY);
 		passwordMainPassword.setBounds(157, 259, 162, 19);
 		contentPane.add(passwordMainPassword);
-		
+
 		textEmail = new JTextField();
 		textEmail.setBackground(Color.LIGHT_GRAY);
 		textEmail.setBounds(157, 149, 162, 19);
 		contentPane.add(textEmail);
 		textEmail.setColumns(10);
-		
+
 		btnNascondiPassword = new JButton("");
-		btnNascondiPasswordPremuto=false;
-		btnNascondiPassword.addActionListener((ActionEvent e)-> onAddActionListener(e));
-		btnNascondiPassword.setIcon(new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioAperto.png"));
-		btnNascondiPassword.setBounds(335, 254, 21, 19);
+		btnNascondiPasswordPremuto = false;
+		btnNascondiPassword.addActionListener((ActionEvent e) -> onAddActionListener(e));
+		btnNascondiPassword.setIcon(
+				new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioAperto.png"));
+		btnNascondiPassword.setBounds(335, 259, 21, 19);
 		contentPane.add(btnNascondiPassword);
-		
-		lbTitoloPaginaLogin = new JLabel("Login",SwingConstants.CENTER);
-		lbTitoloPaginaLogin.setForeground(new Color(128, 64, 64));
+
+		lbTitoloPaginaLogin = new JLabel("Login", SwingConstants.CENTER);
+		lbTitoloPaginaLogin.setForeground(new Color(255, 0, 0));
 		lbTitoloPaginaLogin.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lbTitoloPaginaLogin.setBounds(10, 43, 346, 54);
 		contentPane.add(lbTitoloPaginaLogin);
-		
+
 		btnInviaDati = new JButton("Accedi");
 		btnInviaDati.setBackground(Color.LIGHT_GRAY);
 		btnInviaDati.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnInviaDati.addActionListener((ActionEvent e)-> onBtnInviaDati(e));
+		btnInviaDati.addActionListener((ActionEvent e) -> onBtnInviaDati(e));
 		btnInviaDati.setBounds(145, 323, 109, 21);
 		contentPane.add(btnInviaDati);
-		
+
 		JLabel lblNomeUtente = new JLabel("Nome Utente");
 		lblNomeUtente.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNomeUtente.setBounds(30, 205, 117, 13);
 		contentPane.add(lblNomeUtente);
-		
+
 		textNomeUtente = new JTextField();
 		textNomeUtente.setBackground(Color.LIGHT_GRAY);
 		textNomeUtente.setColumns(10);
 		textNomeUtente.setBounds(157, 202, 162, 19);
 		contentPane.add(textNomeUtente);
-		
+
 		btnRegistrati = new JButton("Registrati");
 		btnRegistrati.setBackground(Color.LIGHT_GRAY);
 		btnRegistrati.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnRegistrati.setBounds(145, 412, 109, 23);
-		btnRegistrati.addActionListener(e -> onBtnRegistrati(e) );
+		btnRegistrati.addActionListener(e -> onBtnRegistrati(e));
 		contentPane.add(btnRegistrati);
-		
+
 		lblRegistrazione = new JLabel("Non hai un profilo ?");
 		lblRegistrazione.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblRegistrazione.setBounds(138, 387, 134, 14);
+		lblRegistrazione.setBounds(138, 380, 134, 21);
 		contentPane.add(lblRegistrazione);
-		
-		
-		if(controller.cookieLogin())
+
+		if (controller.cookieLogin())
 			changeInPanelloMain();
 	}
-	
-	private void onAddActionListener(ActionEvent e){
-		if(!btnNascondiPasswordPremuto){
+
+	private void onAddActionListener(ActionEvent e) {
+		if (!btnNascondiPasswordPremuto) {
 			passwordMainPassword.setEchoChar((char) 0);
-			btnNascondiPassword.setIcon(new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioChiuso.png"));
-		}else {
+			btnNascondiPassword.setIcon(
+					new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioChiuso.png"));
+		} else {
 			passwordMainPassword.setEchoChar('●');
-			btnNascondiPassword.setIcon(new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioAperto.png"));
+			btnNascondiPassword.setIcon(
+					new ImageIcon("C:\\Users\\Matteo\\eclipse-workspace\\Music\\media\\buttonImage\\occhioAperto.png"));
 		}
-		btnNascondiPasswordPremuto=!btnNascondiPasswordPremuto;
+		btnNascondiPasswordPremuto = !btnNascondiPasswordPremuto;
 	}
-	private void onBtnInviaDati(ActionEvent e){
-		if(!registrazione) {
-			if(!controller.login(textNomeUtente.getText(),textEmail.getText(),passwordMainPassword.getText()))
+
+	private void onBtnInviaDati(ActionEvent e) {
+		if (!registrazione) {
+			if (!controller.login(textNomeUtente.getText(), textEmail.getText(), passwordMainPassword.getText()))
 				AllertErroreCredenziali();
-			else 
+			else
 				changeInPanelloMain();
-		}else {
-			controller.RegistrazioneUtente(textNomeUtente.getText(),textEmail.getText(),passwordMainPassword.getText());
-			registrazione=false;
+		} else {
+			controller.RegistrazioneUtente(textNomeUtente.getText(), textEmail.getText(),
+					passwordMainPassword.getText());
+			registrazione = false;
 			lbTitoloPaginaLogin.setText("Login");
 			btnInviaDati.setText("Login");
 			textEmail.setText("");
@@ -150,7 +154,8 @@ public class FrameLogin extends JFrame {
 			btnRegistrati.setVisible(true);
 		}
 	}
-	private void onBtnRegistrati(ActionEvent e){
+
+	private void onBtnRegistrati(ActionEvent e) {
 		lbTitoloPaginaLogin.setText("Registrazione");
 		btnInviaDati.setText("Registrati");
 		textEmail.setText("");
@@ -158,37 +163,34 @@ public class FrameLogin extends JFrame {
 		passwordMainPassword.setText("");
 		lblRegistrazione.setText("");
 		btnRegistrati.setVisible(false);
-		registrazione=true;		
+		registrazione = true;
 	}
 
-	
 	private void AllertErroreCredenziali() {
-	    JOptionPane.showOptionDialog(
-	            contentPane, 
-	            getStringaAllertErroreCredenziali(), // Messaggio di errore
-	            "Errore Login", // Titolo della finestra
-	            JOptionPane.DEFAULT_OPTION, // Tipo di finestra
-	            JOptionPane.ERROR_MESSAGE, // Icona dell'errore
-	            null, // Non ci sono icone personalizzate
-	            new Object[] { "OK" }, // Pulsante OK per continuare
-	            "OK" // Default button
-	        );
+		JOptionPane.showOptionDialog(contentPane, getStringaAllertErroreCredenziali(), // Messaggio di errore
+				"Errore Login", // Titolo della finestra
+				JOptionPane.DEFAULT_OPTION, // Tipo di finestra
+				JOptionPane.ERROR_MESSAGE, // Icona dell'errore
+				null, // Non ci sono icone personalizzate
+				new Object[] { "OK" }, // Pulsante OK per continuare
+				"OK" // Default button
+		);
 	}
-	
+
 	private String getStringaAllertErroreCredenziali() {
-		if(!textEmail.getText().equals("")&&!textNomeUtente.getText().equals("")&&!passwordMainPassword.getText().equals(""))	
+		if (!textEmail.getText().equals("") && !textNomeUtente.getText().equals("")
+				&& !passwordMainPassword.getText().equals(""))
 			return "Errore, credenziali errate.";
 		return "Errore, hai uno o più campi vuoti.";
-		
+
 	}
 
-	
 	private void changeInPanelloMain() {
-		setContentPane(new PannelMain(controller,this)); // Mostra il nuovo pannello
-        revalidate();             // Aggiorna il layout
-        repaint();
+		setContentPane(new PannelMain(controller, this)); // Mostra il nuovo pannello
+		revalidate(); // Aggiorna il layout
+		repaint();
 	}
-	
+
 	public JPasswordField getPasswordMainPassword() {
 		return passwordMainPassword;
 	}
@@ -196,17 +198,17 @@ public class FrameLogin extends JFrame {
 	public JTextField getTextEmail() {
 		return textEmail;
 	}
-	
+
 	public JTextField getTextNomeUtente() {
 		return textNomeUtente;
 	}
+
 	public JPanel getPannelLogin() {
 		return contentPane;
 	}
+
 	public JPanel getActualyPanel() {
 		return (JPanel) this.getContentPane();
-		
+
 	}
 }
-
-
